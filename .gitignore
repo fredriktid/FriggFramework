@@ -1,0 +1,8 @@
+cache/*
+vendor/*
+*~
+nohup.out
+*DS_Store*
+._.*
+composer.lock
+composer.phar
