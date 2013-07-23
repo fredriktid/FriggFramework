@@ -2,6 +2,11 @@
 
 namespace Frigg\Core\Components;
 
+use Frigg\Core;
+use Frigg\Core\Components;
+use Frigg\Entity;
+use Frigg\Controllers;
+
 if(!defined('APP_TOKEN'))
 {
     die('This file can not be called directly');
@@ -9,7 +14,6 @@ if(!defined('APP_TOKEN'))
 
 class FactoryComponent extends BaseComponent
 {
-    // fetch a specific object 
     public function build($class)
     {
         return new $class;

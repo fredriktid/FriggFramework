@@ -28,6 +28,12 @@ class Account
         $this->profile = $profile;
         $profile->setAccount($this);
     }
+
+    public function getProfile()
+    {
+        return $this->profile;
+    }
+
     public function setNumber($number)
     {
         $this->number = $number;

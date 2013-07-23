@@ -18,10 +18,10 @@ class DatabaseComponent extends BaseComponent
     // instantiate doctrines entity manager
     private static function init()
     {
-        $entityLoader = new \Doctrine\Common\ClassLoader('Frigg\Entity', realpath(APP_HOME), 'loadClass');
+        $entityLoader = new ClassLoader('Frigg\Entity', realpath(APP_HOME), 'loadClass');
         $entityLoader->register();
 
-        $repositoryLoader = new \Doctrine\Common\ClassLoader('Frigg\Entity\Repository', realpath(APP_HOME), 'loadClass');
+        $repositoryLoader = new ClassLoader('Frigg\Entity\Repository', realpath(APP_HOME), 'loadClass');
         $repositoryLoader->register();
 
         $paths = array(APP_PATH . '/Entity');

@@ -2,14 +2,15 @@
 
 namespace Frigg\Controllers;
 
-use Frigg\Entity;
+use Frigg\Core as App;
+use Frigg\Entity as Entity;
 use Frigg\Entity\Repository;
 
 class ProfileController extends BaseController
 {
     public function indexAction($request)
     {
-        $registry = \Frigg\Core\Registry::singleton();
+        $registry = App\Registry::singleton();
         $em = $registry->getComponent('db')->getEntityManager();
 
         if(!isset($request['id']))
@@ -41,11 +42,11 @@ class ProfileController extends BaseController
 
     public function createAction($request)
     {
-        $registry = \Frigg\Core\Registry::singleton();
+        $registry = App\Registry::singleton();
         $em = $registry->getComponent('db')->getEntityManager();
 
-        $account = new \Frigg\Entity\Account;
-        $profile = new \Frigg\Entity\Profile;
+        $account = new Entity\Account;
+        $profile = new Entity\Profile;
 
         $profile->setName('Placeholder');
         $account->setProfile($profile);
@@ -55,7 +56,8 @@ class ProfileController extends BaseController
 
         echo "created";
         echo "<pre>";
-        $account->getProfile();
+        print_r($account);
+        print_r($account->getProfile());
         echo "</pre>"; die;
     }
 }

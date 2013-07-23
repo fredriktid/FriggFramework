@@ -2,13 +2,15 @@
 
 namespace Frigg\Controllers;
 
+use Frigg\Core as App;
+
 class BaseController
 {
 	protected $tpl;
 
 	public function __construct()
 	{
-		$registry = \Frigg\Core\Registry::singleton();
+		$registry = App\Registry::singleton();
 		$this->tpl = $registry->getComponent('tpl')->factory();
 	}
 

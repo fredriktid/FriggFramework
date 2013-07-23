@@ -1,9 +1,9 @@
 <?php
 
-use Frigg\Core;
+use Frigg\Core as App;
 
 // init registry instance
-$registry = \Frigg\Core\Registry::singleton();
+$registry = App\Registry::singleton();
 
 // default settings
 $registry->setSetting('skin', 'default');
@@ -13,5 +13,5 @@ $registry->setSetting('tpl', 'twig');
 $registry->loadComponents();
 
 // return response
-$response = require_once __DIR__ . '/Controllers/Router.php';
+$response = require_once __DIR__ . '/router.php';
 return $response;
