@@ -8,6 +8,12 @@ use Frigg\Entity\Repository;
 
 class ProfileController extends BaseController
 {
+    public function __construct()
+    {
+        parent::__construct();
+        $this->log->setFile('profile');
+    }
+
     public function indexAction($request)
     {
         $this->http->redirect('/?profile&action=list');
@@ -57,9 +63,7 @@ class ProfileController extends BaseController
     {
         $registry = App\Registry::singleton();
         $postVars = $this->http->getPost();
-
-        if(!isset($postVars['submit']))
-        {
+        if(!isset($postVars['submit'])) {
             return $this->tpl->render('profile/create.html.twig');
         }
 
@@ -69,8 +73,7 @@ class ProfileController extends BaseController
 
         $em = $registry->getComponent('db')->getEntityManager();
 
-        try
-        {
+        try {
             $profile = new Entity\Profile;
             $profile->setName($name);
             $profile->setCreated(time());
@@ -82,9 +85,9 @@ class ProfileController extends BaseController
             
             $em->persist($account);
             $em->flush();
-        }
-        catch(\Exception $e)
-        {
+            $this->log->write(sprintf('Created profile %d: %s', $profile->getId(), $profile->getName()));
+        } catch(\Exception $e) {
+            $this->log->write($e->getMessage());
             return $this->error($e->getMessage());
         }
 

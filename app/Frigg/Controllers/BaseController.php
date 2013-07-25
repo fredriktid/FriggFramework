@@ -15,10 +15,12 @@ class BaseController
 		$registry = App\Registry::singleton();
 		$registry->setComponent('http', 'http');
 		$registry->setComponent('tpl', 'template');
+		$registry->setComponent('log', 'logger');
 		$registry->setComponent('session', 'session');
 
 		$this->tpl = $registry->getComponent('tpl')->factory();
 		$this->http = $registry->getComponent('http');
+		$this->log = $registry->getComponent('log');
 		$this->session = $registry->getComponent('session');
 	}
 

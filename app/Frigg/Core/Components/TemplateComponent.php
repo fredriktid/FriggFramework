@@ -9,14 +9,12 @@ class TemplateComponent extends BaseComponent
     // instantiate a template engine
     public function factory($engine = false)
     {
-        if(!$engine)
-        {
+        if(!$engine) {
             $engine = $this->instance->getSetting('tpl');
         }
 
         $pattern = sprintf('load%s', $this->instance->pattern($engine));
-        if(!method_exists(__CLASS__, $pattern))
-        {
+        if(!method_exists(__CLASS__, $pattern)) {
             throw new \Exception(sprintf('Unknown template engine: %s', $engine));
         }
         
@@ -27,8 +25,7 @@ class TemplateComponent extends BaseComponent
     private function loadTwig()
     {
         $designPath = sprintf('%s/%s/%s', APP_DESIGN, $this->instance->getSetting('skin'), 'templates');
-        if(!is_readable($designPath))
-        {
+        if(!is_readable($designPath)) {
             throw new \Exception('Design not found');
         }
 

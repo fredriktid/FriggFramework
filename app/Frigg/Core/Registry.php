@@ -28,10 +28,8 @@ class Registry
     /// public singleton method used to access the object
     public static function singleton()  
     {  
-        if(!isset(self::$instance))  
-        {  
-            $obj = __CLASS__;  
-            self::$instance = new $obj;  
+        if(!isset(self::$instance)) {
+            self::$instance = new self;  
         }  
           
         return self::$instance;
@@ -40,8 +38,7 @@ class Registry
     // get component from registry
     public function getComponent($comp)  
     {  
-        if(is_object(self::$components[$comp]))  
-        {  
+        if(is_object(self::$components[$comp])) {  
             return self::$components[$comp];  
         }
 

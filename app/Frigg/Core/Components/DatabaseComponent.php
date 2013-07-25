@@ -36,8 +36,7 @@ class DatabaseComponent extends BaseComponent
     // get instance of entity manager
     public static function getEntityManager()
     {
-        if(is_null(self::$em))
-        {
+        if(is_null(self::$em)) {
             self::build();
         }
 

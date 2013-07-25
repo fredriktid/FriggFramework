@@ -1,4 +1,5 @@
 cache/*
+log/*
 vendor/*
 *~
 nohup.out

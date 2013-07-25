@@ -15,8 +15,7 @@ $controller = (!$controller) ? 'Index' : App\Registry::pattern($controller);
 
 // extract GET-params from request
 $request = array();
-foreach($data as $item)
-{
+foreach($data as $item) {
     list($key, $value) = explode('=', $item);
     $request[$key] = $value;
 }
@@ -29,8 +28,7 @@ $action = (array_key_exists('action', $request)) ? strtolower($request['action']
 $actionPattern = $action . 'Action';
 
 // is it callable?
-if(!method_exists($controllerPattern, $actionPattern))
-{
+if(!method_exists($controllerPattern, $actionPattern)) {
     die(sprintf('Router: Action not found', $actionPattern, $controllerPattern));
 }
 
