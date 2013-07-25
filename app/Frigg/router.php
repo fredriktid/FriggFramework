@@ -22,7 +22,7 @@ foreach($data as $item)
 }
 
 // set controller pattern
-$controllerPattern = '\Frigg\Controllers\\' . $controller . 'Controller';
+$controllerPattern = '\\Frigg\\Controllers\\' . $controller . 'Controller';
 
 // set action pattern
 $action = (array_key_exists('action', $request)) ? strtolower($request['action']) : 'index';

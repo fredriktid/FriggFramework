@@ -13,3 +13,4 @@ define('APP_HOME', APP_ROOT . '/app');
 define('APP_PATH', APP_HOME . '/' . APP_NAME);
 define('APP_DESIGN', APP_ROOT . '/design/' . APP_NAME);
 define('APP_CACHE', APP_ROOT . '/cache/' . APP_NAME);
+define('APP_CONFIG', APP_ROOT . '/config');

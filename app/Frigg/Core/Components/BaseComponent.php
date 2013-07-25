@@ -2,10 +2,7 @@
 
 namespace Frigg\Core\Components;
 
-if(!defined('APP_TOKEN'))
-{
-    die('This file can not be called directly');
-}
+defined('APP_TOKEN') or die('This file can not be called directly');
 
 class BaseComponent
 {

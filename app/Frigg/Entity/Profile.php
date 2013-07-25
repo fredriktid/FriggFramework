@@ -19,9 +19,19 @@ class Profile
     private $name;
 
     /**
+    * @Column(type="integer")
+    **/
+    private $created;
+
+    /**
     * @OneToOne(targetEntity="Account", inversedBy="profile", cascade={"persist"})
     */
     private $account;
+
+    public function getId()
+    {
+        return $this->id;
+    }
 
     public function setAccount(Account $account)
     {
@@ -41,5 +51,15 @@ class Profile
     public function setName($name)
     {
         $this->name = $name;
+    }
+
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    public function setCreated($created)
+    {
+        $this->created = $created;
     }
 }

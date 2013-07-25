@@ -2,11 +2,9 @@
 
 namespace Frigg\Core\Components;
 
-if(!defined('APP_TOKEN'))
-{
-    die('This file can not be called directly');
-}
+defined('APP_TOKEN') or die('This file can not be called directly');
 
+use Frigg\Core as App;
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Common\ClassLoader;
@@ -16,8 +14,11 @@ class DatabaseComponent extends BaseComponent
     private static $em = null;
 
     // instantiate doctrines entity manager
-    private static function init()
+    private static function build()
     {
+        $registry = App\Registry::singleton();
+        $settings = $registry->getComponent('config')->load('site');
+
         $entityLoader = new ClassLoader('Frigg\Entity', realpath(APP_HOME), 'loadClass');
         $entityLoader->register();
 
@@ -27,17 +28,9 @@ class DatabaseComponent extends BaseComponent
         $paths = array(APP_PATH . '/Entity');
         $devMode = (defined('APP_DEV') && APP_DEV);
 
-        // the connection configuration
-        $dbParams = array(
-            'driver'   => 'pdo_mysql',
-            'user'     => 'root',
-            'password' => 'root',
-            'dbname'   => 'frigg',
-        );
-
         // connect
         $config = Setup::createAnnotationMetadataConfiguration($paths, $devMode);
-        self::$em = EntityManager::create($dbParams, $config);
+        self::$em = EntityManager::create($settings['database'], $config);
     }
 
     // get instance of entity manager
@@ -45,7 +38,7 @@ class DatabaseComponent extends BaseComponent
     {
         if(is_null(self::$em))
         {
-            self::init();
+            self::build();
         }
 
         return self::$em;

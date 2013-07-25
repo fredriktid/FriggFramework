@@ -7,11 +7,19 @@ use Frigg\Core as App;
 class BaseController
 {
 	protected $tpl;
+	protected $http;
+	protected $session;
 
 	public function __construct()
 	{
 		$registry = App\Registry::singleton();
+		$registry->setComponent('http', 'http');
+		$registry->setComponent('tpl', 'template');
+		$registry->setComponent('session', 'session');
+
 		$this->tpl = $registry->getComponent('tpl')->factory();
+		$this->http = $registry->getComponent('http');
+		$this->session = $registry->getComponent('session');
 	}
 
 	public function error($msg, $code = 500)

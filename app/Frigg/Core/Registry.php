@@ -13,8 +13,7 @@ class Registry
     // array of settings
     private static $settings = array(); 
       
-    // private constructor to prevent it being called form outside this class
-    // a user must never have more than one instance of this class
+    // private constructor to prevent user having more than once instance
     private function __construct()
     {
 
@@ -52,8 +51,8 @@ class Registry
     // load all default componenets in registry
     public function loadComponents()
     {
+        $this->setComponent('config', 'config');
         $this->setComponent('db', 'database');
-        $this->setComponent('tpl', 'template');
     }
   
     // set a componenet in registry

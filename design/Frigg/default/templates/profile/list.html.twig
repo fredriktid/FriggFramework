@@ -1,8 +1,19 @@
-<table>
-	{% for item in collection %}
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+	<table>
 		<tr>
-			<td>{{ item.name }}</td>
-			<td>kr {{ item.account.number|number_format(2, ',', ' ') }}</td>
+			<th>Name</th>
+			<th>Account number</th>
+			<th>Amount</th>
 		</tr>
-	{% endfor %}
-</table>
+		{% for profile in collection %}
+			<tr>
+				<td><a href="/?profile&amp;action=view&amp;id={{ profile.id }}">{{ profile.name }}</a></td>
+				<td>{{ profile.account.number }}</td>
+				<td>{{ profile.account.amount|number_format(2, ',', ' ') }}</td>
+			</tr>
+		{% endfor %}
+	</table>
+	<p><a href="/?profile&amp;action=create">Create</a></p>
+{% endblock %}
