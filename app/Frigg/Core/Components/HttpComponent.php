@@ -6,6 +6,21 @@ defined('APP_TOKEN') or die('This file can not be called directly');
 
 class HttpComponent extends BaseComponent
 {
+
+	public function startSession()
+	{
+        session_start();
+    }
+
+    public function getSession($key)
+    {
+		if(!$key) {
+			return $_SESSION;
+		}
+
+		return $_SESSION[$key];
+	}
+
 	public function setPost($key, $value)
 	{
 		$_POST[$key] = $value;
