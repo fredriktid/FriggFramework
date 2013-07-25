@@ -9,8 +9,7 @@ class ConfigComponent extends BaseComponent
     public function load($config)
     {
     	$path = sprintf('%s/%s.php', APP_CONFIG, $config);
-    	if(!is_readable($path))
-    	{
+    	if(!is_readable($path)) {
     		return false;
     	}
 

@@ -41,16 +41,14 @@ class ProfileController extends BaseController
         $registry = App\Registry::singleton();
         $em = $registry->getComponent('db')->getEntityManager();
 
-        if(!isset($request['id']))
-        {
+        if(!isset($request['id'])) {
              return $this->error('Missing Profile ID', 404);
         }
 
         $profileId = (int) $request['id'];
         $profileObj = $em->getRepository('Frigg\Entity\Profile')->find($profileId);
 
-        if(!$profileObj)
-        {
+        if(!$profileObj) {
             return $this->error(sprintf('Unable to find profile %d', $profileId), 404);
         }
 
