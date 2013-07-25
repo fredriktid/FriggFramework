@@ -29,7 +29,7 @@ foreach($data as $item) {
 }
 
 // set controller pattern
-$controllerPattern = sprintf('\Frigg\Controllers\%sController', $controller);
+$controllerPattern = sprintf('\%s\Controllers\%sController', APP_NAME, $controller);
 
 // set action pattern
 $action = (array_key_exists('action', $request)) ? strtolower($request['action']) : 'index';

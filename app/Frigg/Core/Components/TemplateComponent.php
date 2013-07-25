@@ -18,11 +18,11 @@ class TemplateComponent extends BaseComponent
 
     public function getEngine($engine)  
     {  
-        if(!is_object(self::$engines[$engine])) {  
+        if(!is_object(static::$engines[$engine])) {  
             throw new \Exception('Unknown engine');
         }
 
-        return self::$engines[$engine]; 
+        return static::$engines[$engine]; 
     }
   
     public function setEngine($engine)  
@@ -30,7 +30,7 @@ class TemplateComponent extends BaseComponent
         $enginePattern = sprintf('\Frigg\Core\Components\TemplateEngines\%sEngine', $this->instance->pattern($engine));
         
         try {
-            self::$engines[$engine] = new $enginePattern($this->instance);
+            static::$engines[$engine] = new $enginePattern($this->instance);
         } catch(\Exception $e) {
             throw new \Exception($e->getMessage());
         }

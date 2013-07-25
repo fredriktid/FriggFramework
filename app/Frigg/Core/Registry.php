@@ -5,16 +5,16 @@ namespace Frigg\Core;
 class Registry
 {     
     // unique instance of registry
-    private static $instance;  
+    protected static $instance;  
 
     // array for our components
-    private static $components = array();  
+    protected static $components = array();  
       
     // array of settings
-    private static $settings = array(); 
+    protected static $settings = array(); 
       
-    // private constructor to prevent user having more than once instance
-    private function __construct()
+    // protected constructor to prevent user having more than once instance
+    protected function __construct()
     {
 
     }
@@ -28,18 +28,18 @@ class Registry
     /// public singleton method used to access the object
     public static function singleton()  
     {  
-        if(!isset(self::$instance)) {
-            self::$instance = new self;  
+        if(!isset(static::$instance)) {
+            static::$instance = new static;  
         }  
           
-        return self::$instance;
+        return static::$instance;
     }
 
     // get component from registry
     public function getComponent($comp)  
     {  
-        if(is_object(self::$components[$comp])) {  
-            return self::$components[$comp];  
+        if(is_object(static::$components[$comp])) {  
+            return static::$components[$comp];  
         }
 
         return false;
@@ -48,8 +48,8 @@ class Registry
     // set a componenet in registry
     public function setComponent($key, $identifier)  
     {        
-        $classPattern = sprintf('\Frigg\Core\Components\%sComponent', self::pattern($identifier));
-        self::$components[$key] = new $classPattern(self::$instance);
+        $classPattern = sprintf('\Frigg\Core\Components\%sComponent', static::pattern($identifier));
+        static::$components[$key] = new $classPattern(static::$instance);
         return $this;
     }
      
@@ -73,14 +73,14 @@ class Registry
     // stores setting in registry
     public function setSetting($key, $value)  
     {  
-        self::$settings[$key] = $value;
+        static::$settings[$key] = $value;
         return $this;
     }  
       
     // get setting from registry
     public function getSetting($key)  
     {  
-        return self::$settings[$key];
+        return static::$settings[$key];
     }
       
 }  

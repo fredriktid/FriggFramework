@@ -19,10 +19,10 @@ class DatabaseComponent extends BaseComponent
         $registry = App\Registry::singleton();
         $settings = $registry->getComponent('config')->getConfig('database', 'doctrine');
 
-        $entityLoader = new ClassLoader('Frigg\Entity', realpath(APP_HOME), 'loadClass');
+        $entityLoader = new ClassLoader(sprintf('%s\Entity', APP_NAME), realpath(APP_HOME), 'loadClass');
         $entityLoader->register();
 
-        $repositoryLoader = new ClassLoader('Frigg\Entity\Repository', realpath(APP_HOME), 'loadClass');
+        $repositoryLoader = new ClassLoader(sprintf('%s\Entity\Repository', APP_NAME), realpath(APP_HOME), 'loadClass');
         $repositoryLoader->register();
 
         $paths = array(APP_PATH . '/Entity');
@@ -30,17 +30,17 @@ class DatabaseComponent extends BaseComponent
 
         // connect
         $config = Setup::createAnnotationMetadataConfiguration($paths, $devMode);
-        self::$em = EntityManager::create($settings, $config);
+        static::$em = EntityManager::create($settings, $config);
     }
 
     // get instance of entity manager
     public static function getEntityManager()
     {
-        if(is_null(self::$em)) {
-            self::createEntityManager();
+        if(is_null(static::$em)) {
+            static::createEntityManager();
         }
 
-        return self::$em;
+        return static::$em;
     }
 
 }

@@ -11,13 +11,13 @@ class LoggerComponent extends BaseComponent
 
     public function setFile($file)
     {
-        self::$file = $file;
+        static::$file = $file;
         return $this;
     }
 
     public function getFile()
     {
-        return self::$file;
+        return static::$file;
     }
 
     public function write($message)
@@ -26,7 +26,7 @@ class LoggerComponent extends BaseComponent
             throw new \Exception(sprintf('Unable to create log directory: %s', APP_LOG));
         }
 
-        $filePath =  sprintf('%s/%s.%s', APP_LOG, self::$file, self::$extension);
+        $filePath =  sprintf('%s/%s.%s', APP_LOG, static::$file, static::$extension);
         $message = sprintf('[%s] %s%s', strftime('%F %T'), preg_replace('/\r|\n/', '', $message), PHP_EOL);
         file_put_contents($filePath, $message, FILE_APPEND);
         return $this;
