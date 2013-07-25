@@ -1,4 +1,4 @@
-##FriggFramework v0.1
+##FriggFramework v0.2
 
 My first attempt at a simple and modern PHP framework
 
