@@ -15,20 +15,20 @@ class ConfigComponent extends BaseComponent
         foreach(glob(APP_CONFIG . '/*.php') as $file) {
             $fileObj = new \SplFileObject($file);
             $fileName = substr($fileObj->getFilename(), 0, -1 * (strlen($fileObj->getExtension()) + 1));
-            self::$configs[$fileName] = require $file;
+            static::$configs[$fileName] = require $file;
         }
     }
 
     public function getConfig($config, $section = false)
     {
-        if(!array_key_exists($config, self::$configs)) {
+        if(!array_key_exists($config, static::$configs)) {
             return false;
         }
 
         if(!$section) {
-            return self::$configs[$config];
+            return static::$configs[$config];
         }
 
-        return self::$configs[$config][$section];
+        return static::$configs[$config][$section];
     }
 }
