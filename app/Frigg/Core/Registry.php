@@ -44,7 +44,15 @@ class Registry
 
         return false;
     }
-
+  
+    // set a componenet in registry
+    public function setComponent($key, $identifier)  
+    {        
+        $classPattern = sprintf('\Frigg\Core\Components\%sComponent', self::pattern($identifier));
+        self::$components[$key] = new $classPattern(self::$instance);
+        return $this;
+    }
+     
     // load all default componenets in registry
     public function setDefaultComponents()
     {
@@ -55,15 +63,7 @@ class Registry
 
         return $this;
     }
-  
-    // set a componenet in registry
-    public function setComponent($key, $identifier)  
-    {        
-        $classPattern = sprintf('\Frigg\Core\Components\%sComponent', self::pattern($identifier));
-        self::$components[$key] = new $classPattern(self::$instance);
-        return $this;
-    }
-     
+    
     // converts snakecase to camelcase pattern
     public static function pattern($className)
     {

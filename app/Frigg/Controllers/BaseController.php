@@ -15,7 +15,7 @@ class BaseController
 		$registry = App\Registry::singleton()
 			->setComponent('http', 'http')
 			->setComponent('log', 'logger');
-			
+		
 		$this->tpl = $registry->getComponent('tpl')->getEngine('twig')->getEnviornment();
 		$this->http = $registry->getComponent('http');
 		$this->log = $registry->getComponent('log');

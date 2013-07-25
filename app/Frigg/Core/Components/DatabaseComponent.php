@@ -17,7 +17,7 @@ class DatabaseComponent extends BaseComponent
     private static function createEntityManager()
     {
         $registry = App\Registry::singleton();
-        $settings = $registry->getComponent('config')->load('site');
+        $settings = $registry->getComponent('config')->getConfig('database', 'doctrine');
 
         $entityLoader = new ClassLoader('Frigg\Entity', realpath(APP_HOME), 'loadClass');
         $entityLoader->register();
@@ -30,7 +30,7 @@ class DatabaseComponent extends BaseComponent
 
         // connect
         $config = Setup::createAnnotationMetadataConfiguration($paths, $devMode);
-        self::$em = EntityManager::create($settings['database'], $config);
+        self::$em = EntityManager::create($settings, $config);
     }
 
     // get instance of entity manager
