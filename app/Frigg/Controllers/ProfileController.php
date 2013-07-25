@@ -42,14 +42,14 @@ class ProfileController extends BaseController
         $em = $registry->getComponent('db')->getEntityManager();
 
         if(!isset($request['id'])) {
-             return $this->error('Missing Profile ID', 404);
+             throw new \Exception('Missing ID');
         }
 
         $profileId = (int) $request['id'];
         $profileObj = $em->getRepository('Frigg\Entity\Profile')->find($profileId);
 
         if(!$profileObj) {
-            return $this->error(sprintf('Unable to find profile %d', $profileId), 404);
+            throw new \Exception('Unable to find profile');
         }
 
         return $this->tpl->render('profile/view.html.twig', array(
@@ -85,8 +85,7 @@ class ProfileController extends BaseController
             $em->flush();
             $this->log->write(sprintf('Created profile %d: %s', $profile->getId(), $profile->getName()));
         } catch(\Exception $e) {
-            $this->log->write($e->getMessage());
-            return $this->error($e->getMessage());
+            throw new \Exception($e->getMessage());
         }
 
         return $this->tpl->render('profile/view.html.twig', array(

@@ -12,24 +12,15 @@ class BaseController
 
 	public function __construct()
 	{
-		$registry = App\Registry::singleton();
-		$registry->setComponent('http', 'http');
-		$registry->setComponent('tpl', 'template');
-		$registry->setComponent('log', 'logger');
-		$registry->setComponent('session', 'session');
+		$registry = App\Registry::singleton()
+			->setComponent('http', 'http')
+			->setComponent('log', 'logger')
+			->setComponent('session', 'session');
 
-		$this->tpl = $registry->getComponent('tpl')->factory();
+		$this->tpl = $registry->getComponent('tpl')->setEngine('twig')->load();
 		$this->http = $registry->getComponent('http');
 		$this->log = $registry->getComponent('log');
 		$this->session = $registry->getComponent('session');
-	}
 
-	public function error($msg, $code = 500)
-	{
-		$msg = (!is_array($msg)) ? array($msg) : $msg;
-		return $this->tpl->render('error.html.twig', array(
-			'code' => $code,
-			'errors' => $msg
-			));
 	}
 }

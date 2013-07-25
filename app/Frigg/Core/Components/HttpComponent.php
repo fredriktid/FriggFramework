@@ -9,6 +9,7 @@ class HttpComponent extends BaseComponent
 	public function setPost($key, $value)
 	{
 		$_POST[$key] = $value;
+		return $this;
 	}
 
 	public function getPost($key = false)
@@ -23,6 +24,7 @@ class HttpComponent extends BaseComponent
 	public function setGet($key, $value)
 	{
 		$_GET[$key] = $value;
+		return $this;
 	}
 
 	public function getGet($key = false)

@@ -9,6 +9,7 @@ class SessionComponent extends BaseComponent
 	public function start()
 	{
         session_start();
+        return $this;
     }
 
 }

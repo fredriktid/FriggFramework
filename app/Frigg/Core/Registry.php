@@ -46,17 +46,22 @@ class Registry
     }
 
     // load all default componenets in registry
-    public function loadComponents()
+    public function setDefaultComponents()
     {
         $this->setComponent('config', 'config');
         $this->setComponent('db', 'database');
+        $this->setComponent('tpl', 'template');
+        $this->setComponent('log', 'logger');
+
+        return $this;
     }
   
     // set a componenet in registry
     public function setComponent($key, $identifier)  
     {        
         $classPattern = sprintf('\Frigg\Core\Components\%sComponent', self::pattern($identifier));
-        self::$components[$key] = new $classPattern(self::$instance);  
+        self::$components[$key] = new $classPattern(self::$instance);
+        return $this;
     }
      
     // converts snakecase to camelcase pattern
@@ -69,6 +74,7 @@ class Registry
     public function setSetting($key, $value)  
     {  
         self::$settings[$key] = $value;
+        return $this;
     }  
       
     // get setting from registry

@@ -29,6 +29,7 @@ class LoggerComponent extends BaseComponent
         $filePath =  sprintf('%s/%s.%s', APP_LOG, self::$file, self::$extension);
         $message = sprintf('[%s] %s%s', strftime('%F %T'), preg_replace('/\r|\n/', '', $message), PHP_EOL);
         file_put_contents($filePath, $message, FILE_APPEND);
+        return $this;
     }
 
     public function createDir($target)
@@ -37,6 +38,6 @@ class LoggerComponent extends BaseComponent
             return true;
         }
 
-        return mkdir($target, 0777);
+        return mkdir($target, 0755);
     }
 }

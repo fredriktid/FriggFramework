@@ -13,7 +13,7 @@ class DatabaseComponent extends BaseComponent
 {
     private static $em = null;
 
-    // instantiate doctrines entity manager
+    // instantiate doctrine entity manager
     private static function build()
     {
         $registry = App\Registry::singleton();
