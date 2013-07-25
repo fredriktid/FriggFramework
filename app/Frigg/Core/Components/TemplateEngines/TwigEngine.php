@@ -13,7 +13,7 @@ class TwigEngine
 		$this->instance = $instance;
     }
 
-    public function load()
+    public function getEnviornment()
     {
         $designPath = sprintf('%s/%s/%s', APP_DESIGN, $this->instance->getSetting('skin'), 'templates');
         if(!is_readable($designPath)) {

@@ -8,6 +8,14 @@ class TemplateComponent extends BaseComponent
 {
     private static $engines = array();
 
+    public function __construct($instance)
+    {
+        parent::__construct($instance);
+
+        // default
+        $this->setEngine('twig');
+    }
+
     public function getEngine($engine)  
     {  
         if(!is_object(self::$engines[$engine])) {  
@@ -26,7 +34,5 @@ class TemplateComponent extends BaseComponent
         } catch(\Exception $e) {
             throw new \Exception($e->getMessage());
         }
-        
-        return self::$engines[$engine];
     }
 }

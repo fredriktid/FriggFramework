@@ -17,10 +17,9 @@ class BaseController
 			->setComponent('log', 'logger')
 			->setComponent('session', 'session');
 
-		$this->tpl = $registry->getComponent('tpl')->setEngine('twig')->load();
+		$this->tpl = $registry->getComponent('tpl')->getEngine('twig')->getEnviornment();
 		$this->http = $registry->getComponent('http');
 		$this->log = $registry->getComponent('log');
 		$this->session = $registry->getComponent('session');
-
 	}
 }

@@ -10,7 +10,7 @@ $registry = App\Registry::singleton()
 	->setDefaultComponents();
 
 // get components
-$template = $registry->getComponent('tpl')->setEngine('twig')->load();
+$template = $registry->getComponent('tpl')->getEngine('twig')->getEnviornment();
 $logger = $registry->getComponent('log');
 
 // fetch the request string

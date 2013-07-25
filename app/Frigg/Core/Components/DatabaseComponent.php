@@ -13,8 +13,8 @@ class DatabaseComponent extends BaseComponent
 {
     private static $em = null;
 
-    // instantiate doctrine entity manager
-    private static function build()
+    // create doctrine entity manager
+    private static function createEntityManager()
     {
         $registry = App\Registry::singleton();
         $settings = $registry->getComponent('config')->load('site');
@@ -37,7 +37,7 @@ class DatabaseComponent extends BaseComponent
     public static function getEntityManager()
     {
         if(is_null(self::$em)) {
-            self::build();
+            self::createEntityManager();
         }
 
         return self::$em;
