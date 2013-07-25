@@ -1,8 +1,0 @@
-<table>
-	{% for item in collection %}
-		<tr>
-			<td>{{ item.name }}</td>
-			<td>kr {{ item.account.number|number_format(2, ',', ' ') }}</td>
-		</tr>
-	{% endfor %}
-</table>

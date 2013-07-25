@@ -7,8 +7,7 @@ require_once APP_ROOT . '/vendor/autoload.php';
 function friggAutoloader($class)
 {
     $filename = APP_HOME . '/' . str_replace('\\', '/', $class) . '.php';
-    if(is_readable($filename))
-    {
+    if(is_readable($filename)) {
     	require_once $filename;
     }
 }

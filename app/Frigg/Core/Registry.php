@@ -13,8 +13,7 @@ class Registry
     // array of settings
     private static $settings = array(); 
       
-    // private constructor to prevent it being called form outside this class
-    // a user must never have more than one instance of this class
+    // private constructor to prevent user having more than once instance
     private function __construct()
     {
 
@@ -29,10 +28,8 @@ class Registry
     /// public singleton method used to access the object
     public static function singleton()  
     {  
-        if(!isset(self::$instance))  
-        {  
-            $obj = __CLASS__;  
-            self::$instance = new $obj;  
+        if(!isset(self::$instance)) {
+            self::$instance = new self;  
         }  
           
         return self::$instance;
@@ -41,28 +38,32 @@ class Registry
     // get component from registry
     public function getComponent($comp)  
     {  
-        if(is_object(self::$components[$comp]))  
-        {  
+        if(is_object(self::$components[$comp])) {  
             return self::$components[$comp];  
         }
 
         return false;
-    }
-
-    // load all default componenets in registry
-    public function loadComponents()
-    {
-        $this->setComponent('db', 'database');
-        $this->setComponent('tpl', 'template');
     }
   
     // set a componenet in registry
     public function setComponent($key, $identifier)  
     {        
         $classPattern = sprintf('\Frigg\Core\Components\%sComponent', self::pattern($identifier));
-        self::$components[$key] = new $classPattern(self::$instance);  
+        self::$components[$key] = new $classPattern(self::$instance);
+        return $this;
     }
      
+    // load all default componenets in registry
+    public function setDefaultComponents()
+    {
+        $this->setComponent('config', 'config');
+        $this->setComponent('db', 'database');
+        $this->setComponent('tpl', 'template');
+        $this->setComponent('log', 'logger');
+
+        return $this;
+    }
+    
     // converts snakecase to camelcase pattern
     public static function pattern($className)
     {
@@ -73,6 +74,7 @@ class Registry
     public function setSetting($key, $value)  
     {  
         self::$settings[$key] = $value;
+        return $this;
     }  
       
     // get setting from registry

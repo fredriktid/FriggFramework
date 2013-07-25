@@ -11,7 +11,7 @@ use Symfony\Component\Console\Helper\HelperSet;
 require_once __DIR__ . '/autoloader.php';
 
 $registry = \Frigg\Core\Registry::singleton();
-$registry->loadComponents();
+$registry->setDefaultComponents();
 
 $em = $registry->getComponent('db')->getEntityManager();
 

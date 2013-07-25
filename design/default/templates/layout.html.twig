@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}FriggFramework{% endblock %}</title>
+        {% block css %}{% endblock %}
+		<link href="/design/default/css/bootstrap.min.css" rel="stylesheet" media="screen">
+		<link href="/design/default/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
+		<link href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css">
+    </head>
+    <body>
+		<div class="container-fluid">
+			<div class="row-fluid">
+				<div class="span12">
+					<h1>FriggFramework v0.1</h1>
+				</div>
+			</div>
+			<div class="row-fluid">
+				<div class="span12">
+					<ul class="nav nav-pills">
+						<li><a href="/?index">Home</a></li>
+						<li><a href="/?profile&amp;action=list">List</a></li>
+						<li><a href="/?profile&amp;action=create">Create</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="row-fluid">
+				<div class="span12">
+					{% block content %}{% endblock %}
+				</div>
+			</div>
+		</div>
+		{% block js %}{% endblock %}
+		<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+		<script src="/design/default/js/bootstrap.min.js"></script>		
+	</body>
+</html>

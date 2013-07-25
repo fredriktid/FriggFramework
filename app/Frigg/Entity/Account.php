@@ -14,20 +14,36 @@ class Account
     private $id;
 
     /**
-    * @Column(type="integer")
+    * @Column(type="integer", unique = true)
     **/
     private $number;
+
+    /**
+    * @Column(type="integer")
+    **/
+    private $amount;
 
    /**
     * @OneToOne(targetEntity="Profile", mappedBy="account", cascade={"persist"})
     */
     private $profile;
 
+    public function getId()
+    {
+        return $this->id;
+    }
+
     public function setProfile(Profile $profile)
     {
         $this->profile = $profile;
         $profile->setAccount($this);
     }
+
+    public function getProfile()
+    {
+        return $this->profile;
+    }
+
     public function setNumber($number)
     {
         $this->number = $number;
@@ -38,19 +54,23 @@ class Account
         return $this->number;
     }
 
-    public function getId()
+    public function setAmount($amount)
     {
-        return $this->id;
+        $this->amount = $amount;
     }
 
-    public function deposit($number)
+    public function getAmount()
     {
-        $this->number += $number;
+        return $this->amount;
     }
 
-    public function withdraw($number)
+    public function depositAmount($amount)
     {
-        $this->number -= $number;
+        $this->amount += $amount;
     }
 
+    public function withdrawAmount($amount)
+    {
+        $this->amount -= $amount;
+    }
 }

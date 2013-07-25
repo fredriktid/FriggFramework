@@ -2,60 +2,99 @@
 
 namespace Frigg\Controllers;
 
-use Frigg\Entity;
+use Frigg\Core as App;
+use Frigg\Entity as Entity;
 use Frigg\Entity\Repository;
 
 class ProfileController extends BaseController
 {
+    public function __construct()
+    {
+        parent::__construct();
+        $this->log->setFile('profile');
+    }
+
     public function indexAction($request)
     {
-        $registry = \Frigg\Core\Registry::singleton();
+        $this->http->redirect('/?profile&action=list');
+    }
+
+    public function listAction($request)
+    {
+        $registry = App\Registry::singleton();
         $em = $registry->getComponent('db')->getEntityManager();
 
-        if(!isset($request['id']))
-        {
-            $collection = $em->getRepository('Frigg\Entity\Profile')
-                ->findBy(
-                    array(),
-                    array('id' => 'DESC')
-                );
+        $collection = $em->getRepository('Frigg\Entity\Profile')
+            ->findBy(
+                array(),
+                array('id' => 'DESC')
+            );
 
-            $collection = (!$collection) ? array() : $collection;
-            return $this->tpl->render('profile/list.html.twig', array(
-                'collection' => $collection
-            ));
+        $collection = (!$collection) ? array() : $collection;
+        return $this->tpl->render('profile/list.html.twig', array(
+            'collection' => $collection
+        ));
+    }
+
+    public function viewAction($request)
+    {
+        $registry = App\Registry::singleton();
+        $em = $registry->getComponent('db')->getEntityManager();
+
+        if(!isset($request['id'])) {
+             throw new \Exception('Missing ID');
         }
 
         $profileId = (int) $request['id'];
         $profileObj = $em->getRepository('Frigg\Entity\Profile')->find($profileId);
 
-        if(!$profileObj)
-        {
-            return $this->error(sprintf('Unable to find profile %d', $profileId), 404);
+        if(!$profileObj) {
+            throw new \Exception('Unable to find profile');
         }
 
-        return $this->tpl->render('profile/profile.html.twig', array(
+        return $this->tpl->render('profile/view.html.twig', array(
             'profile' => $profileObj
         ));
     }
 
     public function createAction($request)
     {
-        $registry = \Frigg\Core\Registry::singleton();
+        $registry = App\Registry::singleton();
+        $postVars = $this->http->getPost();
+        if(!isset($postVars['submit'])) {
+            return $this->tpl->render('profile/create.html.twig');
+        }
+
+        $name = ($postVars['name']) ? (string) $postVars['name'] : '';
+        $number = ($postVars['number']) ? (int) $postVars['number'] : 0;
+        $amount = ($postVars['amount']) ? (int) $postVars['amount'] : 0;
+
         $em = $registry->getComponent('db')->getEntityManager();
+        $accountObj = $em->getRepository('Frigg\Entity\Account')->findByNumber($number);
+        if($accountObj) {
+            throw new \Exception('Account already exists');
+        }
 
-        $account = new \Frigg\Entity\Account;
-        $profile = new \Frigg\Entity\Profile;
+        try {
+            $profile = new Entity\Profile;
+            $profile->setName($name);
+            $profile->setCreated(time());
 
-        $profile->setName('Placeholder');
-        $account->setProfile($profile);
-        $account->setNumber(mt_rand(100000,10000000));
-        $em->persist($account);
-        $em->flush();
+            $account = new Entity\Account;
+            $account->setProfile($profile);
+            $account->setNumber($number);
+            $account->setAmount($amount);
+            
+            $em->persist($account);
+            $em->flush();
+            $this->log->write(sprintf('Created profile %d: %s', $profile->getId(), $profile->getName()));
+        } catch(\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
 
-        echo "created";
-        echo "<pre>";
-        $account->getProfile();
-        echo "</pre>"; die;
+        return $this->tpl->render('profile/view.html.twig', array(
+            'profile' => $profile,
+            'firsttime' => true
+        ));
     }
 }
