@@ -70,6 +70,10 @@ class ProfileController extends BaseController
         $amount = ($postVars['amount']) ? (int) $postVars['amount'] : 0;
 
         $em = $registry->getComponent('db')->getEntityManager();
+        $accountObj = $em->getRepository('Frigg\Entity\Account')->findByNumber($number);
+        if($accountObj) {
+            throw new \Exception('Account already exists');
+        }
 
         try {
             $profile = new Entity\Profile;

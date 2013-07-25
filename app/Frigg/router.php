@@ -5,8 +5,6 @@ use Frigg\Controllers;
 
 // init
 $registry = App\Registry::singleton()
-	->setSetting('skin', 'default')
-	->setSetting('tpl', 'twig')
 	->setDefaultComponents();
 
 // get components
