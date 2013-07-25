@@ -73,5 +73,4 @@ class Account
     {
         $this->amount -= $amount;
     }
-
 }

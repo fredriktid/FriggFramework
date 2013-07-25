@@ -45,5 +45,3 @@ class DatabaseComponent extends BaseComponent
     }
 
 }
-
-
