@@ -17,7 +17,7 @@ class TemplateComponent extends BaseComponent
         $pattern = sprintf('load%s', $this->instance->pattern($engine));
         if(!method_exists(__CLASS__, $pattern))
         {
-            die(sprintf('Unknown template engine: %s', $engine));
+            throw new \Exception(sprintf('Unknown template engine: %s', $engine));
         }
         
         return call_user_func(array(__CLASS__, $pattern));
@@ -27,8 +27,12 @@ class TemplateComponent extends BaseComponent
     private function loadTwig()
     {
         $designPath = sprintf('%s/%s/%s', APP_DESIGN, $this->instance->getSetting('skin'), 'templates');
-        $cacheKey = (defined('APP_DEV') && APP_DEV) ? false : APP_CACHE . '/twig';
+        if(!is_readable($designPath))
+        {
+            throw new \Exception('Design not found');
+        }
 
+        $cacheKey = (defined('APP_DEV') && APP_DEV) ? false : APP_CACHE . '/twig';
         $twigLoader = new \Twig_Loader_Filesystem($designPath);
         return new \Twig_Environment($twigLoader, array(
             'cache' => $cacheKey

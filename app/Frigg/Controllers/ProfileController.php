@@ -88,7 +88,7 @@ class ProfileController extends BaseController
             return $this->error($e->getMessage());
         }
 
-        return $this->tpl->render('profile/profile.html.twig', array(
+        return $this->tpl->render('profile/view.html.twig', array(
             'profile' => $profile,
             'firsttime' => true
         ));
