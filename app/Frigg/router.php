@@ -5,7 +5,7 @@ use Frigg\Controllers;
 
 // init
 $registry = App\Registry::singleton()
-	->setDefaultComponents();
+    ->setDefaultComponents();
 
 // get components
 $template = $registry->getComponent('tpl')->getEngine('twig')->getEnviornment();
@@ -37,20 +37,20 @@ $actionPattern = $action . 'Action';
 
 // is it callable?
 if(!method_exists($controllerPattern, $actionPattern)) {
-	return $template->render('error.html.twig', array(
-		'code' => 500,
-		'error' => sprintf('Router: Action not found', $actionPattern, $controllerPattern)
-	));
+    return $template->render('error.html.twig', array(
+        'code' => 500,
+        'error' => sprintf('Router: Action not found', $actionPattern, $controllerPattern)
+    ));
 }
 
 try {
-	// execute controller
-	$controller = new $controllerPattern;
-	return $controller->$actionPattern($request);
+    // execute controller
+    $controller = new $controllerPattern;
+    return $controller->$actionPattern($request);
 } catch(\Exception $e) {
-	$logger->setFile('error')->write($e->getMessage());
-	return $template->render('error.html.twig', array(
-		'code' => 500,
-		'error' => sprintf('Exception: %s', $e->getMessage())
-	));
+    $logger->setFile('error')->write($e->getMessage());
+    return $template->render('error.html.twig', array(
+        'code' => 500,
+        'error' => sprintf('Exception: %s', $e->getMessage())
+    ));
 }

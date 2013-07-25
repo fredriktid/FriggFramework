@@ -6,11 +6,11 @@ defined('APP_TOKEN') or die('This file can not be called directly');
 
 class TwigEngine
 {
-	private $instance;
+    private $instance;
 
-	public function __construct($instance)
-	{
-		$this->instance = $instance;
+    public function __construct($instance)
+    {
+        $this->instance = $instance;
     }
 
     public function getEnviornment()
