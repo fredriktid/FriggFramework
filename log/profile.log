@@ -1,0 +1,4 @@
+[2013-07-25 20:12:25] An exception occurred while executing 'INSERT INTO Account (number, amount) VALUES (?, ?)' with params [4444, 100]:SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '4444' for key 'UNIQ_B28B6F3896901F54'
+[2013-07-25 20:12:26] An exception occurred while executing 'INSERT INTO Account (number, amount) VALUES (?, ?)' with params [4444, 100]:SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '4444' for key 'UNIQ_B28B6F3896901F54'
+[2013-07-25 21:26:37] An exception occurred while executing 'INSERT INTO Account (number, amount) VALUES (?, ?)' with params [0, 0]:SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '0' for key 'UNIQ_B28B6F3896901F54'
+[2013-07-25 21:29:30] An exception occurred while executing 'INSERT INTO Account (number, amount) VALUES (?, ?)' with params [0, 0]:SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '0' for key 'UNIQ_B28B6F3896901F54'
