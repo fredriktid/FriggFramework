@@ -6,16 +6,18 @@ defined('APP_TOKEN') or die('This file can not be called directly');
 
 class TwigEngine
 {
-    private $instance;
+    private $registry;
+    public $instance;
 
-    public function __construct($instance)
+    public function __construct($registry)
     {
-        $this->instance = $instance;
+        $this->registry = $registry;
+        $this->instance = $this->getEnviornment();
     }
 
     public function getEnviornment()
     {
-        $designPath = sprintf('%s/%s/%s', APP_DESIGN, $this->instance->getComponent('config')->getConfig('site', 'skin'), 'templates');
+        $designPath = sprintf('%s/%s/%s', APP_DESIGN, $this->registry->getComponent('config')->getConfig('site', 'skin'), 'templates');
         if(!is_readable($designPath)) {
             throw new \Exception('Template location not found');
         }

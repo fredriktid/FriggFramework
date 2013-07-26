@@ -16,7 +16,7 @@ class BaseController
             ->setComponent('http', 'http')
             ->setComponent('log', 'logger');
         
-        $this->tpl = $registry->getComponent('tpl')->getEngine('twig')->getEnviornment();
+        $this->tpl = $registry->getComponent('tpl')->getEngine('twig')->instance;
         $this->http = $registry->getComponent('http');
         $this->log = $registry->getComponent('log');
     }

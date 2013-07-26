@@ -8,7 +8,7 @@ $registry = App\Registry::singleton()
     ->setDefaultComponents();
 
 // get components
-$template = $registry->getComponent('tpl')->getEngine('twig')->getEnviornment();
+$template = $registry->getComponent('tpl')->getEngine('twig');
 $logger = $registry->getComponent('log');
 
 // fetch the request string
@@ -37,7 +37,7 @@ $actionPattern = $action . 'Action';
 
 // is it callable?
 if(!method_exists($controllerPattern, $actionPattern)) {
-    return $template->render('error.html.twig', array(
+    return $template->instance->render('error.html.twig', array(
         'code' => 500,
         'error' => sprintf('Router: Action not found', $actionPattern, $controllerPattern)
     ));
@@ -49,7 +49,7 @@ try {
     return $controller->$actionPattern($request);
 } catch(\Exception $e) {
     $logger->setFile('error')->write($e->getMessage());
-    return $template->render('error.html.twig', array(
+    return $template->instance->render('error.html.twig', array(
         'code' => 500,
         'error' => sprintf('Exception: %s', $e->getMessage())
     ));
