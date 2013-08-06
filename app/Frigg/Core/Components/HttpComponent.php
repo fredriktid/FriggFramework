@@ -33,7 +33,7 @@ class HttpComponent extends BaseComponent
 
     public function getSession($key)
     {
-        if(!$key) {
+        if (!$key) {
             return $_SESSION;
         }
 
@@ -53,7 +53,7 @@ class HttpComponent extends BaseComponent
 
     public function getPost($key = false)
     {
-        if(!$key) {
+        if (!$key) {
             return $_POST;
         }
 
@@ -68,7 +68,7 @@ class HttpComponent extends BaseComponent
 
     public function getGet($key = false)
     {
-        if(!$key) {
+        if (!$key) {
             return $_GET;
         }
         
@@ -77,7 +77,7 @@ class HttpComponent extends BaseComponent
 
     public function getRequest($key = false)
     {
-        if(!$key) {
+        if (!$key) {
             return $_REQUEST;
         }
         

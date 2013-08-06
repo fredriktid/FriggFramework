@@ -18,7 +18,7 @@ class TemplateComponent extends BaseComponent
 
     public function getEngine($engine)  
     {  
-        if(!is_object(static::$engines[$engine])) {  
+        if (!is_object(static::$engines[$engine])) {  
             throw new \Exception('Unknown engine');
         }
 
@@ -34,5 +34,7 @@ class TemplateComponent extends BaseComponent
         } catch(\Exception $e) {
             throw new \Exception($e->getMessage());
         }
+
+        return $this;
     }
 }

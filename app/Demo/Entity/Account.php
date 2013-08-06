@@ -1,9 +1,9 @@
 <?php
 
-namespace Frigg\Entity;
+namespace Demo\Entity;
 
 /**
- * @Entity(repositoryClass="Frigg\Entity\Repository\AccountRepository")
+ * @Entity(repositoryClass="Demo\Entity\Repository\AccountRepository")
  */
 class Account
 {

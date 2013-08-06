@@ -18,7 +18,7 @@ class TwigEngine
     public function getEnviornment()
     {
         $designPath = sprintf('%s/%s/%s', APP_DESIGN, $this->registry->getComponent('config')->getConfig('site', 'skin'), 'templates');
-        if(!is_readable($designPath)) {
+        if (!is_readable($designPath)) {
             throw new \Exception('Template location not found');
         }
 

@@ -13,7 +13,7 @@ require_once __DIR__ . '/autoloader.php';
 $registry = \Frigg\Core\Registry::singleton();
 $registry->setDefaultComponents();
 
-$em = $registry->getComponent('db')->getEntityManager();
+$em = $registry->getComponent('db')->getEngine('doctrine')->instance;
 
 $helperSet = new \Symfony\Component\Console\Helper\HelperSet(array(
     'db' => new \Doctrine\DBAL\Tools\Console\Helper\ConnectionHelper($em->getConnection()),

@@ -11,36 +11,36 @@ use Doctrine\Common\ClassLoader;
 
 class DatabaseComponent extends BaseComponent
 {
-    private static $em = null;
+    private static $engines = array();
 
-    // create doctrine entity manager
-    private static function createEntityManager()
+    public function __construct($instance)
     {
-        $registry = App\Registry::singleton();
-        $settings = $registry->getComponent('config')->getConfig('database', 'doctrine');
+        parent::__construct($instance);
 
-        $entityLoader = new ClassLoader(sprintf('%s\Entity', APP_NAME), realpath(APP_HOME), 'loadClass');
-        $entityLoader->register();
-
-        $repositoryLoader = new ClassLoader(sprintf('%s\Entity\Repository', APP_NAME), realpath(APP_HOME), 'loadClass');
-        $repositoryLoader->register();
-
-        $paths = array(APP_PATH . '/Entity');
-        $devMode = (defined('APP_DEV') && APP_DEV);
-
-        // connect
-        $config = Setup::createAnnotationMetadataConfiguration($paths, $devMode);
-        static::$em = EntityManager::create($settings, $config);
+        // default
+        $this->setEngine('doctrine');
     }
 
-    // get instance of entity manager
-    public static function getEntityManager()
-    {
-        if(is_null(static::$em)) {
-            static::createEntityManager();
+    public function getEngine($engine)  
+    {  
+        if (!is_object(static::$engines[$engine])) {  
+            throw new \Exception('Unknown engine');
         }
 
-        return static::$em;
+        return static::$engines[$engine]; 
+    }
+  
+    public function setEngine($engine)  
+    {
+        $enginePattern = sprintf('\Frigg\Core\Components\DatabaseEngines\%sEngine', $this->instance->pattern($engine));
+        
+        try {
+            static::$engines[$engine] = new $enginePattern($this->instance);
+        } catch(\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
+
+        return $this;
     }
 
 }

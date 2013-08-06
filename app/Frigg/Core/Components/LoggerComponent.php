@@ -22,7 +22,7 @@ class LoggerComponent extends BaseComponent
 
     public function write($message)
     {
-        if(!$this->createDir(APP_LOG)) {
+        if (!$this->createDir(APP_LOG)) {
             throw new \Exception(sprintf('Unable to create log directory: %s', APP_LOG));
         }
 
@@ -34,7 +34,7 @@ class LoggerComponent extends BaseComponent
 
     public function createDir($target)
     {
-        if(is_dir($target)) {
+        if (is_dir($target)) {
             return true;
         }
 
