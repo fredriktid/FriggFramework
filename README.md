@@ -1,6 +1,6 @@
-##FriggFramework v0.2
+# FriggFramework v0.4
 
-My first attempt at a simple and modern PHP framework
+My first attempt at a simple and modern microframework.
 
 Use [composer](http://getcomposer.org/) to install [Doctrine](https://github.com/doctrine/doctrine2) and [Twig](https://github.com/fabpot/Twig) (or roll something else)
 
@@ -9,4 +9,4 @@ Use [composer](http://getcomposer.org/) to install [Doctrine](https://github.com
         "twig/twig": "1.*"
     }
 
-Includes a few dummy entities and controllers at the moment
+Install with ```php composer.phar update``` and then edit database settings in ```config/database.php```.
