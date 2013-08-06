@@ -1,7 +1,7 @@
 <?php
 
 // your app
-define('APP_NAME', 'Frigg');
+define('APP_NAME', 'Demo');
 
 // mode
 define('APP_DEV', true);

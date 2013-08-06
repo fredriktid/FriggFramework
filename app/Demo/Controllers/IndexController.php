@@ -1,6 +1,8 @@
 <?php
 
-namespace Frigg\Controllers;
+namespace Demo\Controllers;
+
+use Frigg\Controllers\BaseController;
 
 class IndexController extends BaseController
 {

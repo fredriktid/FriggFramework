@@ -12,7 +12,7 @@ class ConfigComponent extends BaseComponent
     {
         parent::__construct($instance);
 
-        foreach(glob(APP_CONFIG . '/*.php') as $file) {
+        foreach (glob(APP_CONFIG . '/*.php') as $file) {
             $fileObj = new \SplFileObject($file);
             $fileName = substr($fileObj->getFilename(), 0, -1 * (strlen($fileObj->getExtension()) + 1));
             static::$configs[$fileName] = require $file;
@@ -21,11 +21,11 @@ class ConfigComponent extends BaseComponent
 
     public function getConfig($config, $section = false)
     {
-        if(!array_key_exists($config, static::$configs)) {
+        if (!array_key_exists($config, static::$configs)) {
             return false;
         }
 
-        if(!$section) {
+        if (!$section) {
             return static::$configs[$config];
         }
 

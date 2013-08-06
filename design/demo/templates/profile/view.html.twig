@@ -1,0 +1,11 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+	<h2>{{ profile.name }}</h2>
+	{% if firsttime %}
+		<p><strong>This profile was just created</strong></p>
+	{% endif %}
+	<ul>
+		<li>Account number: {{ profile.account.number }}</li>
+		<li>Amount: NOK {{ profile.account.amount|number_format(2, ',', ' ') }}</li>
+{% endblock %}

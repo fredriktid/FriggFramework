@@ -1,10 +1,11 @@
 <?php
 
-namespace Frigg\Controllers;
+namespace Demo\Controllers;
 
 use Frigg\Core as App;
-use Frigg\Entity as Entity;
-use Frigg\Entity\Repository;
+use Frigg\Controllers\BaseController;
+use Demo\Entity as Entity;
+use Demo\Entity\Repository;
 
 class ProfileController extends BaseController
 {
@@ -22,9 +23,9 @@ class ProfileController extends BaseController
     public function listAction($request)
     {
         $registry = App\Registry::singleton();
-        $em = $registry->getComponent('db')->getEntityManager();
+        $em = $registry->getComponent('db')->getEngine('doctrine')->instance;
 
-        $collection = $em->getRepository('Frigg\Entity\Profile')
+        $collection = $em->getRepository('Demo\Entity\Profile')
             ->findBy(
                 array(),
                 array('id' => 'DESC')
@@ -39,16 +40,16 @@ class ProfileController extends BaseController
     public function viewAction($request)
     {
         $registry = App\Registry::singleton();
-        $em = $registry->getComponent('db')->getEntityManager();
+        $em = $registry->getComponent('db')->getEngine('doctrine')->instance;
 
-        if(!isset($request['id'])) {
+        if (!isset($request['id'])) {
              throw new \Exception('Missing ID');
         }
 
         $profileId = (int) $request['id'];
-        $profileObj = $em->getRepository('Frigg\Entity\Profile')->find($profileId);
+        $profileObj = $em->getRepository('Demo\Entity\Profile')->find($profileId);
 
-        if(!$profileObj) {
+        if (!$profileObj) {
             throw new \Exception('Unable to find profile');
         }
 
@@ -61,7 +62,7 @@ class ProfileController extends BaseController
     {
         $registry = App\Registry::singleton();
         $postVars = $this->http->getPost();
-        if(!isset($postVars['submit'])) {
+        if (!isset($postVars['submit'])) {
             return $this->tpl->render('profile/create.html.twig');
         }
 
@@ -69,9 +70,9 @@ class ProfileController extends BaseController
         $number = ($postVars['number']) ? (int) $postVars['number'] : 0;
         $amount = ($postVars['amount']) ? (int) $postVars['amount'] : 0;
 
-        $em = $registry->getComponent('db')->getEntityManager();
-        $accountObj = $em->getRepository('Frigg\Entity\Account')->findByNumber($number);
-        if($accountObj) {
+        $em = $registry->getComponent('db')->getEngine('doctrine')->instance;
+        $accountObj = $em->getRepository('Demo\Entity\Account')->findByNumber($number);
+        if ($accountObj) {
             throw new \Exception('Account already exists');
         }
 
