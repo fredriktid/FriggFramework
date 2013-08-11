@@ -1,12 +1,10 @@
-##FriggFramework v0.1
+##FriggFramework v1.0
 
-My first attempt at a simple and modern PHP framework
+My first attempt at a simple and modern PHP framework.
 
-Use [composer](http://getcomposer.org/) to install [Doctrine](https://github.com/doctrine/doctrine2) and [Twig](https://github.com/fabpot/Twig) (or roll something else)
+1. Clone this repository
+2. Download [composer](http://getcomposer.org/) and install dependencies with ```php composer.phar update```
+3. Edit database settings in ```config/database.php```
+4. Create your own app
 
-    "require": {
-        "doctrine/orm": "2.*",
-        "twig/twig": "1.*"
-    }
-
-Includes a few dummy entities and controllers at the moment
+A more detailed description will be available shortly.

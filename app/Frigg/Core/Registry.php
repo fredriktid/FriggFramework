@@ -2,22 +2,20 @@
 
 namespace Frigg\Core;
 
+use Frigg\Core\ClassPattern;
+use Frigg\Core\Component;
+use Frigg\Core\Exception\RegistryException;
+
+// core registry
 class Registry
-{     
-    // unique instance of registry
-    protected static $instance;  
-
-    // array for our components
-    protected static $components = array();  
+{
+    private static $instance = null;  
+    private static $components = array();  
+    private static $settings = array(); 
       
-    // array of settings
-    protected static $settings = array(); 
-      
-    // protected constructor to prevent user having more than once instance
-    protected function __construct()
-    {
-
-    }
+    // private constructor to prevent user having more than once instance
+    // use singleton() instead
+    private function __construct() {}
 
     // prevent cloning of this object to ensure correct data
     public function __clone()  
@@ -25,51 +23,55 @@ class Registry
         trigger_error('Cloning the registry is not permitted', E_USER_ERROR);  
     }
 
-    /// public singleton method used to access the object
+    /// public singleton used to access the unique instance of the registry
     public static function singleton()  
     {  
-        if (!isset(static::$instance)) {
+        // virgin instantiation
+        if(is_null(static::$instance)) {
             static::$instance = new static;  
-        }  
-          
+        }
+
+        // set default settings in registry
+        static::loadSettings();
+
+        // return unique instance
         return static::$instance;
     }
 
     // get component from registry
-    public function getComponent($comp)  
-    {  
-        if (is_object(static::$components[$comp])) {  
-            return static::$components[$comp];  
+    public function getComponent($key)  
+    {
+        // find component and return it
+        if(array_key_exists($key, static::$components) && is_object(static::$components[$key])) {
+            return static::$components[$key]; 
         }
 
-        return false;
+        throw new RegistryException(sprintf('Component key "%s" not found in registry. Try setting it first.', $key));
     }
   
     // set a componenet in registry
-    public function setComponent($key, $identifier)  
+    public function setComponent($key, $classIdentifier)  
     {        
-        $classPattern = sprintf('\Frigg\Core\Components\%sComponent', static::pattern($identifier));
+        $classPattern = sprintf('\Frigg\Core\Component\%sComponent', ClassPattern::identifierToClass($classIdentifier));
         static::$components[$key] = new $classPattern(static::$instance);
         return $this;
     }
-     
-    // load all default componenets in registry
-    public function setDefaultComponents()
-    {
-        $this->setComponent('config', 'config');
-        $this->setComponent('db', 'database');
-        $this->setComponent('tpl', 'template');
-        $this->setComponent('log', 'logger');
 
-        return $this;
-    }
-    
-    // converts snakecase to camelcase pattern
-    public static function pattern($className)
+    // instantiate a helper class
+    // returns a new object each time
+    public function getHelper($classIdentifier)
     {
-        return implode(array_map('ucfirst', explode('_', strtolower($className))));
+        $items = explode('_', $classIdentifier);
+        if(2 > count($items)) {
+            throw new RegistryException('Missing one or more identifiers in helper pattern (<app>_<helper>)');
+        }
+
+        $appName = ClassPattern::identifierToClass(trim(array_shift($items)));
+        $className = ClassPattern::identifierToClass(trim(implode($items)));
+        $classPattern = sprintf('\%s\Helper\%sHelper', $appName, $className);
+        return new $classPattern(static::$instance);
     }
-      
+
     // stores setting in registry
     public function setSetting($key, $value)  
     {  
@@ -82,5 +84,20 @@ class Registry
     {  
         return static::$settings[$key];
     }
-      
-}  
+
+    // default settings
+    private function loadSettings()
+    {
+        static::$instance
+            ->setSetting('frigg_app', APP_NAME)
+            ->setSetting('frigg_dev', APP_DEV)
+            ->setSetting('frigg_skin', APP_SKIN)
+            ->setSetting('frigg_path', APP_PATH)
+            ->setSetting('frigg_path_app', APP_PATH . '/app')
+            ->setSetting('frigg_path_design', APP_PATH . '/design')
+            ->setSetting('frigg_path_cache', APP_PATH . '/cache')
+            ->setSetting('frigg_path_config', APP_PATH . '/config')
+            ->setSetting('frigg_path_log', APP_PATH . '/log');
+    }
+
+}

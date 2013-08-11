@@ -1,8 +1,8 @@
 <?php
 
-namespace Frigg\Models;
+namespace Frigg\Helper;
 
-class BaseModel
+class BaseHelper
 {
 	protected $registry;
 

@@ -1,12 +1,12 @@
 <?php
 
 require_once __DIR__ . '/config.php';
-require_once APP_ROOT . '/vendor/autoload.php';
+require_once __DIR__ . '/vendor/autoload.php';
 
 // magical autoloader
 function friggAutoloader($class)
 {
-    $filename = APP_HOME . '/' . str_replace('\\', '/', $class) . '.php';
+    $filename = __DIR__ . '/app/' . str_replace('\\', '/', $class) . '.php';
     if(is_readable($filename)) {
     	require_once $filename;
     }
