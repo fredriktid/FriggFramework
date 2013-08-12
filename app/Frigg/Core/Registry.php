@@ -2,7 +2,7 @@
 
 namespace Frigg\Core;
 
-use Frigg\Core\ClassPattern;
+use Frigg\Core\ClassPatternConverter;
 use Frigg\Core\Component;
 use Frigg\Core\Exception\RegistryException;
 
@@ -52,7 +52,7 @@ class Registry
     // set a componenet in registry
     public function setComponent($key, $classIdentifier)  
     {        
-        $classPattern = sprintf('\Frigg\Core\Component\%sComponent', ClassPattern::identifierToClass($classIdentifier));
+        $classPattern = sprintf('\Frigg\Core\Component\%sComponent', ClassPatternConverter::identifierToClassString($classIdentifier));
         static::$components[$key] = new $classPattern(static::$instance);
         return $this;
     }
@@ -66,8 +66,8 @@ class Registry
             throw new RegistryException('Missing one or more identifiers in helper pattern (<app>_<helper>)');
         }
 
-        $appName = ClassPattern::identifierToClass(trim(array_shift($items)));
-        $className = ClassPattern::identifierToClass(trim(implode($items)));
+        $appName = ClassPatternConverter::identifierToClassString(trim(array_shift($items)));
+        $className = ClassPatternConverter::identifierToClassString(trim(implode($items)));
         $classPattern = sprintf('\%s\Helper\%sHelper', $appName, $className);
         return new $classPattern(static::$instance);
     }
@@ -99,5 +99,4 @@ class Registry
             ->setSetting('frigg_path_config', APP_PATH . '/config')
             ->setSetting('frigg_path_log', APP_PATH . '/log');
     }
-
 }

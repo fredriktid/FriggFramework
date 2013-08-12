@@ -45,5 +45,4 @@ class LoggerComponent extends BaseComponent
         file_put_contents($logFile, $message, FILE_APPEND);
         return $this;
     }
-
 }

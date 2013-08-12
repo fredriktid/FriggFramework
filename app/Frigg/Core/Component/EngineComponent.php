@@ -3,7 +3,7 @@
 namespace Frigg\Core\Component;
 
 use Frigg\Core\Engine;
-use Frigg\Core\ClassPattern;
+use Frigg\Core\ClassPatternConverter;
 use Frigg\Core\Exception\EngineException;
 use Frigg\Core\Exception\ComponentException;
 
@@ -24,12 +24,14 @@ class EngineComponent extends BaseComponent
   
     public function setEngine($identifier)  
     {
-        $enginePattern = sprintf('\Frigg\Core\Engine\%sEngine', ClassPattern::identifierToClass($identifier));
+        $enginePattern = sprintf('\Frigg\Core\Engine\%sEngine', ClassPatternConverter::identifierToClassString($identifier));
         
         try {
             $this->engines[$identifier] = new $enginePattern($this->registry);
         } catch (EngineException $e) {
             throw new ComponentException($e->getMessage(), 0, $e);
+        } catch (\Exception $unknown) {
+            throw new \Exception($e->getMessage(), 0, $unknown);
         }
 
         return $this;

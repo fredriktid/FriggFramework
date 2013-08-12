@@ -29,8 +29,8 @@ class FileHelper extends BaseHelper
     {
         try {
              $fileObject = new \SplFileObject($file);
-        } catch(\Exception $e) {
-            throw new \Exception(sprintf('CSV: Cannot open file for reading: %s', $file), 0, $e);
+        } catch(\RuntimeException $e) {
+            throw new \RuntimeException(sprintf('CSV Read: Cannot open file %s', $file), 0, $e);
         }
 
         $fileObject->setFlags(\SplFileObject::READ_CSV);
@@ -47,8 +47,8 @@ class FileHelper extends BaseHelper
     {
         try {
              $fileObject = new \SplFileObject($file, 'w');
-        } catch(\Exception $e) {
-            throw new \Exception(sprintf('CSV: Cannot open file for writing: %s', $file), 0, $e);
+        } catch(\RuntimeException $e) {
+            throw new \RuntimeException(sprintf('CSV Write: Cannot write to file: %s', $file), 0, $e);
         }
 
         $logger = $this->registry->getComponent('log')->setFile('csv_write');
@@ -71,5 +71,4 @@ class FileHelper extends BaseHelper
         fclose($fileObject);
         return $this;
     }
-
 }

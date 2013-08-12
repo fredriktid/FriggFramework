@@ -4,7 +4,6 @@ namespace Frigg\Helper;
 
 class StringHelper extends BaseHelper
 {
-
     // escape a string to used it as a regexp pattern
     public function escapeGrepPattern($pattern) {
         return addcslashes($pattern, './+*?[^]($)');

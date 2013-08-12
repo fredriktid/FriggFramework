@@ -6,8 +6,10 @@ use Frigg\Helper\BaseHelper;
 
 class ProfileHelper extends BaseHelper
 {
-    public function getProfilesOlderThanXDays($days)
+	// just an example
+    public function rankProfilesSince($start = false)
     {
-        // ...
+    	$start = (!$start ? strtotime('-7 days') : (int) $start);
+        // and then more logic...
     }
 }

@@ -13,8 +13,8 @@ require_once __DIR__ . '/autoloader.php';
 
 // instantiate registry instance
 $registry = Registry::singleton()
-	->setComponent('config', 'config')
-	->setComponent('engine', 'engine');
+    ->setComponent('config', 'config')
+    ->setComponent('engine', 'engine');
 
 // load doctrine
 $registry->getComponent('engine')->setEngine('doctrine');

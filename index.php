@@ -1,6 +1,7 @@
 <?php
 
 use Frigg\Core\Registry;
+use Frigg\Core\ClassPatternConverter;
 use Frigg\Core\Exception\RouterException;
 use Frigg\Core\Exception\RegistryException;
 use Frigg\Core\Exception\ControllerException;

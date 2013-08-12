@@ -2,17 +2,15 @@
 
 namespace Frigg\Core\Component;
 
-use Frigg\Core\ClassPattern;
+use Frigg\Core\ClassPatternConverter;
 use Frigg\Core\Exception\RouterException;
-use Frigg\Core\Exception\ControllerException;
-use Frigg\Core\Exception\RegistryException;
 
 defined('APP_TOKEN') or die('This file can not be called directly');
 
 class RouterComponent extends BaseComponent
 {
     protected $controller = null;
-    protected $request = array();
+    protected $request = null;
 
     // read read into object
     public function handle($query)
@@ -22,12 +20,15 @@ class RouterComponent extends BaseComponent
 
         // first parameter is controller target
         $identifier = trim(array_shift($params));
-        $this->controller = ($identifier ? ClassPattern::identifierToClass($identifier) : 'Index');
+        $this->controller = ($identifier ? ClassPatternConverter::identifierToClassString($identifier) : 'Index');
 
-        // extract and save parameters
-        foreach($params as $item) {
-            list($key, $value) = explode('=', $item);
-            $this->request[$key] = $value;
+        // set parameters in request constant array
+        $this->request = array();
+        if(count($params)) {
+            foreach($params as $item) {
+                list($key, $value) = explode('=', $item);
+                $this->request[$key] = $value;
+            }
         }
     }
 
@@ -35,8 +36,8 @@ class RouterComponent extends BaseComponent
     public function execute()
     {
         // validate controller class
-        if(is_null($this->controller)) {
-            throw new RouterException('Controller target missing in request query');
+        if(is_null($this->controller) || !is_array($this->request)) {
+            throw new RouterException('Unknown error in request parameters.');
         }
 
         // validate action
@@ -53,12 +54,11 @@ class RouterComponent extends BaseComponent
             throw new RouterException(sprintf('Unknown action: %s', $this->request['action']));
         }
 
-        // remove action from $request
+        // remove action from request before execution
         unset($this->request['action']);
 
         // execute controller, return response
         $controller = new $classPattern($this->registry);
         return $controller->$functionPattern($this->request);
-        
     }
 }

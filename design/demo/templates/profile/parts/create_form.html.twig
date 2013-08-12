@@ -1,6 +1,13 @@
 <form method="post" action="/?profile&action=create">
 	<fieldset>
 		<legend>Create a profile with an account</legend>
+		{% if errors %}
+			<ul>
+			{% for error in errors %}
+				<li class="text-error">{{ error }}</li>
+			{% endfor %}
+			</ul>
+		{% endif %}
 		<div>
 			Name<br />
 			<input type="text" name="name" class="required" />

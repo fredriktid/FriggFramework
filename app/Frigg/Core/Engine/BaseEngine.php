@@ -2,18 +2,18 @@
 
 namespace Frigg\Core\Engine;
 
+use Frigg\Core\Registry;
 use Frigg\Core\Exception\EngineException;
 
 defined('APP_TOKEN') or die('This file can not be called directly');
 
 class BaseEngine
 {
-    protected $registry;
-    protected $instance;
+    protected $registry = null;
+    protected $instance = null;
 
-    public function __construct($registry)
+    public function __construct(Registry $registry)
     {
-        $this->instance = null;
         $this->registry = $registry;
     }
 
