@@ -40,6 +40,7 @@ class FileHelper extends BaseHelper
         foreach($fileObject as $i => $data) {
             $result[$i] = $data;
         }
+        
         return $result;
     }
 

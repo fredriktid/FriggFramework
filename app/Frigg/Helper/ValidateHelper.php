@@ -13,7 +13,7 @@ class ValidateHelper extends BaseHelper
 
     	// default values
     	$errors = array();
-    	$formFields = (!isset($formFields['fields'])) ? array() : $formFields['fields'];
+    	$formFields = (isset($formFields['fields'])) ? $formFields['fields'] : array();
 
         // validate unique fields
         foreach($formFields as $formAttribute => $formData) {
@@ -21,12 +21,12 @@ class ValidateHelper extends BaseHelper
                 $formValue = $postData[$formAttribute];
                 $entityManager = $this->registry->getComponent('engine')->getEngine('doctrine')->getInstance();
                 if($object = $entityManager->getRepository('Demo\Entity\Account')->findBy(array($formAttribute => $formValue))) {
-                    $error[] = sprintf('Account %s already exists', ucfirst($formValue));
+                    $errors[] = sprintf('Account %s already exists', ucfirst($formValue));
                 }
             }
         }
 
-        
+        // validate form data
         foreach($postData as $postAttribute => $postValue) {
             $postAttribute = trim($postAttribute);
             $postValue = trim($postValue);
@@ -36,8 +36,9 @@ class ValidateHelper extends BaseHelper
             }
 
             $fieldData = $formFields[$postAttribute];
-            if($fieldData['required']) {
-                switch($fieldData['type']) {
+            if(isset($fieldData['required']) && $fieldData['required']) {
+            	$type = (array_key_exists('type', $fieldData) ? strtolower($fieldData['type']) : gettype($postValue));
+                switch($type) {
                     case 'string':
                         if(!strlen($postValue)) {
                             $errors[$postAttribute] = sprintf('%s is required and must have content', ucfirst($postAttribute));

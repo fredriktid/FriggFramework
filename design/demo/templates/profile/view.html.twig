@@ -1,11 +1,26 @@
 {% extends 'layout.html.twig' %}
-
 {% block content %}
-	<h2>{{ profile.name }}</h2>
-	{% if firsttime %}
-		<p><strong>This profile was just created</strong></p>
+	{% if errors %}
+		<div>
+			<h2>Auch, what you're looking for is not here. Not sure why you're here in the first place though, it get pretty boring after a while...</h2>
+			<ul>
+			{% for error in errors %}
+				<li class="text-error">{{ error }}</li>
+			{% endfor %}
+			</ul>
+		</div>
+	{% else %}
+		<h1>{{ profile.name }}</h1>
+		<ul>
+			<li>Account number: {{ profile.account.number }}</li>
+			<li>Amount: NOK {{ profile.account.amount|number_format(2, ',', ' ') }}</li>
+		</ul>
+		<pre>
+		{{ dump(profile) }}
+		</pre>
+		<h1>Request</h1>
+		<pre>
+		{{ dump(request) }}
+		</pre>
 	{% endif %}
-	<ul>
-		<li>Account number: {{ profile.account.number }}</li>
-		<li>Amount: NOK {{ profile.account.amount|number_format(2, ',', ' ') }}</li>
 {% endblock %}

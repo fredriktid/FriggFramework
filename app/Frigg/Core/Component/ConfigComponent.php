@@ -12,7 +12,7 @@ class ConfigComponent extends BaseComponent
 
     protected function readConfig($key)
     {
-        // already read?
+        // already in memory
         if(isset($this->config[$key])) {
             return;
         }

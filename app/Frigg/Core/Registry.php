@@ -6,7 +6,8 @@ use Frigg\Core\ClassPatternConverter;
 use Frigg\Core\Component;
 use Frigg\Core\Exception\RegistryException;
 
-// core registry
+// core registry class
+// using the singleton design pattern
 class Registry
 {
     private static $instance = null;  

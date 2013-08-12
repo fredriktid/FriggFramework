@@ -42,8 +42,11 @@ class TwigEngine extends BaseEngine
 
         // return environment instance
         $twigLoader = new \Twig_Loader_Filesystem($designPath);
-        return new \Twig_Environment($twigLoader, array(
-            'cache' => $cachePath
+        $twig = new \Twig_Environment($twigLoader, array(
+            'cache' => $cachePath,
+            'debug' => true, // provides "dump()" and also other useful functions
         ));
+        $twig->addExtension(new \Twig_Extension_Debug());
+        return $twig;
     }
 }

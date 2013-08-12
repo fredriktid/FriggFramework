@@ -1,10 +1,6 @@
 <?php
 
 use Frigg\Core\Registry;
-use Frigg\Core\ClassPatternConverter;
-use Frigg\Core\Exception\RouterException;
-use Frigg\Core\Exception\RegistryException;
-use Frigg\Core\Exception\ControllerException;
 
 require_once __DIR__ . '/autoloader.php';
 
@@ -32,9 +28,14 @@ try {
     } catch(\Exception $e) {
         $tpl = $registry->getComponent('engine')->getEngine('twig')->setSkin('frigg')->getInstance();
         echo $tpl->render('error/exception.html.twig', array(
-            'exception' => sprintf('[%s] %s: %s', strftime('%F %T'), get_class($e), $e->getMessage())
+            'code' => $e->getCode(),
+            'class' => get_class($e),
+            'exception' => sprintf('[%s] %s: %s', strftime('%F %T'), get_class($e), $e->getMessage()),
+            'trace_array' => $e->getTrace(),
+            'trace_string' => $e-> getTraceAsString(),
+            'previous' => $e->getPrevious()
         ));
     }
 } catch(\Exception $e) {
-    printf('[%s] Registry error in %s: "%s"', strftime('%F %T'), get_class($e), $e->getMessage());
+    printf('[%s] Fatal registry error. Exception \'%s\' with message \'%s\'', strftime('%F %T'), get_class($e), $e->getMessage());
 }

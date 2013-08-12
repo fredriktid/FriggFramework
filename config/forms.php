@@ -3,35 +3,43 @@
 return array(
     'profile' => array(
         'create' => array(
-        	'access' => 'all',
+        	'access' => array('all'), // todo
         	'fields' => array(
         		'name' => array(
-        			'type' => 'string',
+                    'name' => 'Name',
+                    'type' => 'string',
+                    'input' => 'text',
+                    'entity' => 'Demo\Entity\Profile',
         			'required' => true,
         			'unique' => false,
-        			'name' => 'Name',
-        			'persist' => true
+                    'persist' => true,
         		),
         		'number' => array(
-        			'type' => 'integer',
+                    'name' => 'Account number',
+                    'type' => 'integer',
+                    'input' => 'text',
+                    'entity' => 'Demo\Entity\Account',
         			'required' => true,
         			'unique' => true,
-        			'name' => 'Account number',
-        			'persist' => true
+                    'persist' => true
         		),
         		'amount' => array(
-        			'type' => 'float',
+                    'name' => 'Amount',
+                    'type' => 'integer',
+                    'input' => 'text',
+                    'entity' => 'Demo\Entity\Account',
         			'required' => true,
         			'unique' => false,
-        			'name' => 'Amount',
-        			'persist' => true
+                    'persist' => true
         		),
         		'submit' => array(
-        			'type' => 'submit',
+        			'name' => 'Create new profile',
+                    'type' => 'submit',
+                    'input' => 'button',
+                    'entity' => false,
         			'required' => false,
         			'unique' => false,
-        			'name' => 'Create new profile',
-        			'persist' => false
+                    'persist' => false
         		)
         	)
    		)

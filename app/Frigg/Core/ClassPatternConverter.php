@@ -7,7 +7,7 @@ use Frigg\Core\Exception\ClassPatternException;
 defined('APP_TOKEN') or die('This file can not be called directly');
 
 // class pattern functions
-// keeps a concise relationship between class names (camelcase) and their identifiers (snakecase)
+// converts between identifiers and class names
 class ClassPatternConverter
 {
     // convert camelcase to snakecase
@@ -17,6 +17,7 @@ class ClassPatternConverter
         if(is_array($matches[0]) || !count($matches[0])) {
             throw new ClassPatternException(sprintf('%s: Error converting %s to identifier', $classString));
         }
+
         return implode('_', array_map('strtolower', $matches[0]));
     }
 
@@ -26,6 +27,7 @@ class ClassPatternConverter
         if(!is_string($identifier)) {
             throw new ClassPatternException(sprintf('%s: Received identifier is not a string.', __METHOD__));
         }
+        
         return implode(array_map('ucfirst', explode('_', $identifier)));
     }
 }

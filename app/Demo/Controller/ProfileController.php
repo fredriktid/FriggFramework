@@ -7,7 +7,7 @@ use Frigg\Controller\BaseController;
 use Frigg\Core\Exception\EntityException;
 use Demo\Entity as Entity;
 use Demo\Entity\Repository;
-
+    
 class ProfileController extends BaseController
 {
     public function indexAction($request)
@@ -37,53 +37,65 @@ class ProfileController extends BaseController
 
     public function viewAction($request)
     {
-        // necessary component instances
-        $db = $this->registry->getComponent('engine')->getEngine('doctrine')->getInstance();
-        $tpl = $this->registry->getComponent('engine')->getEngine('twig')->getInstance();
+        // db engine
+        $db = $this->registry->getComponent('engine')->getEngine('doctrine')->getInstance();        
 
-        // parameter 'id' is required
+        // a required paramenter
+        $errors = array();
+        $profileObj = null;
         if(!isset($request['id'])) {
-             throw new EntityException('Missing ID');
-        }
-
-        // fetch profile from database by reference id
-        $profileId = (int) $request['id'];
-        $profileObj = $db->getRepository('Demo\Entity\Profile')->find($profileId);
-        if(!$profileObj) {
-            throw new EntityException(sprintf('Unable to find profile %d', $profileId));
+            $errors[] = 'Missing profile ID';
+        } else {
+            $profileId = (int) $request['id'];
+            $profileObj = $db->getRepository('Demo\Entity\Profile')->find($profileId);
+            if(!$profileObj) {
+                $errors[] = 'Profile does not exist in database with an id reference';
+            }
         }
 
         // if successful, render user profile template
+        $tpl = $this->registry->getComponent('engine')->getEngine('twig')->getInstance();
         return $tpl->render('profile/view.html.twig', array(
-            'profile' => $profileObj
+            'errors' => $errors,
+            'profile' => $profileObj,
+            'request' => $request
         ));
     }
 
     public function createAction($request)
     {
+        // form settings
+        $formSection = $this->registry->getComponent('config')->getConfig('forms', 'profile');
+        $formSettings = $formSection['create'];
+
         // necessary component instances
         $http = $this->registry->getComponent('http');
         $tpl = $this->registry->getComponent('engine')->getEngine('twig')->getInstance();
         $db = $this->registry->getComponent('engine')->getEngine('doctrine')->getInstance();
-        $form = $this->registry->getComponent('config')->getConfig('forms', 'profile'); 
 
         // if no form has been submitted, render create template
         $postRequest = $http->postVariables();
         if(!isset($postRequest['submit'])) {
             return $tpl->render('profile/create.html.twig', array(
-                'errors' => false
+                'form' => $formSettings,
+                'errors' => array(),
+                'request' => $request
             ));
         }
         
-        // if errors, halt and display them
+        // validate form data against config settings
         $validator = $this->registry->getHelper('frigg_validate');
-        $errors = $validator->validateForm($form['create'], $postRequest);
+        $errors = $validator->validateForm($formSettings, $postRequest);
         if(0 < count($errors)) {
             return $tpl->render('profile/create.html.twig', array(
-                'errors' => $errors
+                'form' => $formSettings,
+                'errors' => $errors,
+                'request' => $request
             ));
         }
 
+        // if successful, create a new profile w/account
+        // persist both objects to database
         try {
             // set profile data
             $profile = new Entity\Profile;
@@ -101,14 +113,17 @@ class ProfileController extends BaseController
             $db->flush();
         } catch(\Exception $e) {
             return $tpl->render('profile/create.html.twig', array(
-                'errors' => array(sprintf('Error saving profile w/account: %s', $e->getMessage()))
+                'form' => $formSettings,
+                'errors' => array(sprintf('Error saving profile w/account: %s', $e->getMessage())),
+                'request' => $request
             ));
         }
 
         // if successful, render newly created profile for first time
         return $tpl->render('profile/view.html.twig', array(
             'profile' => $profile,
-            'firsttime' => true
+            'firsttime' => true,
+            'request' => $request
         ));
     }
 }

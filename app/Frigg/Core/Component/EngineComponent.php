@@ -29,7 +29,7 @@ class EngineComponent extends BaseComponent
         try {
             $this->engines[$identifier] = new $enginePattern($this->registry);
         } catch (EngineException $e) {
-            throw new ComponentException($e->getMessage(), 0, $e);
+            throw new EngineException($e->getMessage(), 0, $e);
         } catch (\Exception $unknown) {
             throw new \Exception($e->getMessage(), 0, $unknown);
         }
