@@ -3,6 +3,7 @@
 namespace Frigg\Helper;
 
 use \Frigg\Core\Registry;
+use Frigg\Core\Exception\ErrorException;
 
 class BaseHelper
 {
@@ -12,15 +13,5 @@ class BaseHelper
 	public function __construct(Registry $registry)
 	{
 		$this->registry = $registry;
-	}
-
-	protected function setData($key, $value)
-	{
-		$this->data[$key] = $value; 
-	}
-
-	protected function data(Array $data)
-	{
-		$this->data = $data;
 	}
 }

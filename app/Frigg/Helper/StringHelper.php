@@ -2,21 +2,26 @@
 
 namespace Frigg\Helper;
 
+use Frigg\Core\Exception\TypeException;
+
 class StringHelper extends BaseHelper
 {
     // escape a string to used it as a regexp pattern
-    public function escapeGrepPattern($pattern) {
+    public function escapeGrepPattern($pattern)
+    {
         return addcslashes($pattern, './+*?[^]($)');
     }
 
     // "get string [between] two characters"
-    public function getStringBetween($string, $start, $end) {
+    public function getStringBetween($string, $start, $end)
+    {
         $string = ' ' . $string;
         $ini = strpos($string, $start);
-        if ($ini == 0) {
+        if($ini == 0) {
             return '';
         }
-        $ini += strlen($start);     
+
+        $ini += strlen($start);
         $len = strpos($string, $end, $ini) - $ini;
         return substr($string, $ini, $len);
     }

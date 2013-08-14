@@ -5,6 +5,6 @@ return array(
         'driver'   => 'pdo_mysql',
         'user'     => 'root',
         'password' => 'root',
-        'dbname'   => 'frigg',
+        'dbname'   => 'frigg'
     )
 );

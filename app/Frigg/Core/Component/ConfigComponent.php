@@ -2,7 +2,7 @@
 
 namespace Frigg\Core\Component;
 
-use Frigg\Core\Exception\ComponentException;
+use Frigg\Core\Exception\CoreException;
 
 defined('APP_TOKEN') or die('This file can not be called directly');
 
@@ -10,39 +10,43 @@ class ConfigComponent extends BaseComponent
 {
     protected $config = array();
 
-    protected function readConfig($key)
+    public function setConfig($identifier, $filePath)
     {
-        // already in memory
-        if(isset($this->config[$key])) {
-            return;
+        if(!array_key_exists($identifier, $this->config)) {
+            if(is_readable($filePath)) {
+                $this->config[$identifier] = require $filePath;
+            }
         }
-
-        // config file path
-        $filePath = sprintf('%s/%s.php', $this->registry->getSetting('frigg_path_config'), $key);
-        if(!is_readable($filePath)) {
-            throw new ComponentException(sprintf('Config file does not exist: %s', $filePath));
-        }
-
-        // save in object
-        $this->config[$key] = require $filePath;
+        return $this;
     }
 
-    public function getConfig($key, $section = false)
+    public function getConfig($identifier)
     {
-        $this->readConfig($key);
+        // first item is filename
+        $parts = explode('/', $identifier);
+        $fileName = trim(array_shift($parts));
+        $filePath = sprintf('%s/%s.php', $this->registry->getSetting('frigg/path/config'), $fileName);
 
-        if(!array_key_exists($key, $this->config)) {
-            throw new ComponentException(sprintf('Config key %s does not exist', $key));
+        // read config
+        $this->setConfig($identifier, $filePath);
+
+        // check if config is available
+        if(!array_key_exists($identifier, $this->config)) {
+            throw new CoreException(sprintf('Config "%s" does not exist in "%s"', $identifier, $filePath));
         }
 
-        if(!$section) {
-            return $this->config[$key];
+        // match config with identifier
+        $configContent = $this->config[$identifier];
+        foreach($parts as $i => $key) {
+            if(is_array($configContent)) {
+                if(array_key_exists($key, $configContent)) {
+                    $configContent = $configContent[$key];
+                } else {
+                    $configContent = null;
+                }
+            }
         }
 
-        if(!isset($this->config[$key][$section])) {
-            throw new ComponentException(sprintf('Config section %s does not exist', $filePath));
-        }
-
-        return $this->config[$key][$section];
+        return $configContent;
     }
 }

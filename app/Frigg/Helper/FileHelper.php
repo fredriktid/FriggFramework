@@ -2,6 +2,8 @@
 
 namespace Frigg\Helper;
 
+use Frigg\Core\Exception\ErrorException;
+
 class FileHelper extends BaseHelper
 {
     public function getFileName($file, $withExtension = false)
@@ -40,7 +42,7 @@ class FileHelper extends BaseHelper
         foreach($fileObject as $i => $data) {
             $result[$i] = $data;
         }
-        
+
         return $result;
     }
 
@@ -52,7 +54,7 @@ class FileHelper extends BaseHelper
             throw new \RuntimeException(sprintf('CSV Write: Cannot write to file: %s', $file), 0, $e);
         }
 
-        $logger = $this->registry->getComponent('log')->setFile('csv_write');
+        $logger = $this->registry->getComponent('frigg/logger')->setFile('csv_write');
         $logger->write(sprintf('--- Begin write to %s ---', $file));
 
         $count = 0;
@@ -67,7 +69,7 @@ class FileHelper extends BaseHelper
             }
             $count++;
         }
-        
+
         $logger->write(sprintf('Finished. Wrote %d of %d rows to file.', $count, count($data)));
         fclose($fileObject);
         return $this;

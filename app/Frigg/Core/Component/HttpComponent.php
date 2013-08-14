@@ -101,7 +101,7 @@ class HttpComponent extends BaseComponent
         }
 
         $value = $_COOKIE[$key];
-        $stringHelper = $this->registry->getHelper('frigg_string');
+        $stringHelper = $this->registry->getHelper('frigg/string');
 
         if($fileHelper->isSerialized($value)) {
             $value = unserialize($value);

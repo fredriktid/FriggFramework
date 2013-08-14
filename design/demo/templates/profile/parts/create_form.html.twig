@@ -8,9 +8,6 @@
 					<li class="text-error">{{ error }}</li>
 				{% endfor %}
 				</ul>
-<pre>
-{{ request }}
-</pre>
 			{% endif %}
 			{% for attribute, data in form.fields %}
 				{% if data.input == 'text' %}

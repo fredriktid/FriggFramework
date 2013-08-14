@@ -13,14 +13,14 @@ require_once __DIR__ . '/autoloader.php';
 
 // instantiate registry instance
 $registry = Registry::singleton()
-    ->setComponent('config', 'config')
-    ->setComponent('engine', 'engine');
+    ->setComponent('frigg/config')
+    ->setComponent('frigg/loader');
 
 // load doctrine
-$registry->getComponent('engine')->setEngine('doctrine');
+$registry->getComponent('frigg/loader')->setLoader('frigg/doctrine');
 
 // get entity manager
-$em = $registry->getComponent('engine')->getEngine('doctrine')->getInstance();
+$em = $registry->getComponent('frigg/loader')->getLoader('frigg/doctrine')->getInstance();
 
 // doctrine helper
 $helperSet = new \Symfony\Component\Console\Helper\HelperSet(array(

@@ -6,7 +6,7 @@ defined('APP_TOKEN') or die('This file can not be called directly');
 
 class BaseComponent
 {
-    protected $registry; 
+    protected $registry;
 
     public function __construct($registry)
     {

@@ -1,46 +1,37 @@
 <?php defined('APP_TOKEN') or die('No direct script access.');
- 
+
 return array(
     'profile' => array(
-        'create' => array(
-        	'access' => array('all'), // todo
+        'create_profile' => array(
         	'fields' => array(
         		'name' => array(
                     'name' => 'Name',
                     'type' => 'string',
                     'input' => 'text',
-                    'entity' => 'Demo\Entity\Profile',
         			'required' => true,
-        			'unique' => false,
-                    'persist' => true,
+        			'unique' => false
         		),
         		'number' => array(
                     'name' => 'Account number',
                     'type' => 'integer',
                     'input' => 'text',
-                    'entity' => 'Demo\Entity\Account',
         			'required' => true,
-        			'unique' => true,
-                    'persist' => true
+        			'unique' => true
         		),
         		'amount' => array(
                     'name' => 'Amount',
                     'type' => 'integer',
                     'input' => 'text',
-                    'entity' => 'Demo\Entity\Account',
         			'required' => true,
-        			'unique' => false,
-                    'persist' => true
+        			'unique' => false
         		),
         		'submit' => array(
         			'name' => 'Create new profile',
                     'type' => 'submit',
                     'input' => 'button',
-                    'entity' => false,
         			'required' => false,
-        			'unique' => false,
-                    'persist' => false
-        		)
+        			'unique' => false
+                )
         	)
    		)
 	)

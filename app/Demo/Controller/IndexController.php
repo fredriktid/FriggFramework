@@ -9,8 +9,7 @@ class IndexController extends BaseController
 {
     public function indexAction($request)
     {
-    	// render a simple index template
-        $tpl = $this->registry->getComponent('engine')->getEngine('twig')->getInstance();
-        return $tpl->render('index.html.twig');
+        $twigEngine = $this->registry->getComponent('frigg/loader')->getLoader('frigg/twig')->getInstance();
+        return $twigEngine->render('index.html.twig');
     }
 }

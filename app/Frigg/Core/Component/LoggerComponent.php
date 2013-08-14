@@ -2,7 +2,7 @@
 
 namespace Frigg\Core\Component;
 
-use Frigg\Core\Exception\ComponentException;
+use Frigg\Core\Exception\CoreException;
 
 defined('APP_TOKEN') or die('This file can not be called directly');
 
@@ -24,24 +24,23 @@ class LoggerComponent extends BaseComponent
 
     public function write($message)
     {
-        // validate log directory
-        $fileHelper = $this->registry->getHelper('frigg_file');
-        $logPath = $this->registry->getSetting('frigg_path_log');
+        // check write access to log directory
+        $fileHelper = $this->registry->getHelper('frigg/file');
+        $logPath = $this->registry->getSetting('frigg/path/log');
         if(!$fileHelper->createDir($logPath)) {
-            throw new ComponentException(sprintf('Unable to create log directory: %s', $logPath));
+            throw new CoreException(sprintf('Unable to create log directory: %s', $logPath));
         }
 
-        // validate log file
+        // also to log file
         $logFile = sprintf('%s/%s.%s', $logPath, $this->file, $this->extension);
         if(!is_writable($logFile)) {
-            throw new ComponentException(sprintf('Unable to write to log file: %s', $logFile));
+            throw new CoreException(sprintf('Unable to write to log file: %s', $logFile));
         }
 
-        // get http componenet
-        $httpComponent = $this->registry->getComponent('http');
+        $httpObject = $this->registry->getComponent('frigg/http');
 
         // write log to file (removes newlines and carriage returns)
-        $message = sprintf('[%s] %s: %s%s', strftime('%F %T'), $httpComponent->remoteAddr(), preg_replace('/\r|\n/', '', $message), PHP_EOL);
+        $message = sprintf('[%s] %s: %s%s', strftime('%F %T'), $httpObject->remoteAddr(), preg_replace('/\r|\n/', '', $message), PHP_EOL);
         file_put_contents($logFile, $message, FILE_APPEND);
         return $this;
     }
