@@ -1,6 +1,7 @@
 #!/usr/bin/env php
 <?php
 
+use Frigg\Core\Registry;
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
 use Doctrine\DBAL\Tools\Console\Helper\ConnectionHelper;
@@ -10,14 +11,22 @@ use Symfony\Component\Console\Helper\HelperSet;
 
 require_once __DIR__ . '/autoloader.php';
 
-$registry = \Frigg\Core\Registry::singleton();
-$registry->setDefaultComponents();
+// instantiate registry instance
+$registry = Registry::singleton()
+    ->setComponent('frigg/config')
+    ->setComponent('frigg/loader');
 
-$em = $registry->getComponent('db')->getEngine('doctrine')->instance;
+// load doctrine
+$registry->getComponent('frigg/loader')->setLoader('frigg/doctrine');
 
+// get entity manager
+$em = $registry->getComponent('frigg/loader')->getLoader('frigg/doctrine')->getInstance();
+
+// doctrine helper
 $helperSet = new \Symfony\Component\Console\Helper\HelperSet(array(
     'db' => new \Doctrine\DBAL\Tools\Console\Helper\ConnectionHelper($em->getConnection()),
     'em' => new \Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper($em)
 ));
 
+// execute console
 ConsoleRunner::run($helperSet);

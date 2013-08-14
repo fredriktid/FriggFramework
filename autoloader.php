@@ -1,15 +1,17 @@
 <?php
 
 require_once __DIR__ . '/config.php';
-require_once APP_ROOT . '/vendor/autoload.php';
+require_once __DIR__ . '/vendor/autoload.php';
 
-// magical autoloader
+// custom autoloader
 function friggAutoloader($class)
 {
-    $filename = APP_HOME . '/' . str_replace('\\', '/', $class) . '.php';
-    if(is_readable($filename)) {
-    	require_once $filename;
+    // find filename to load by namespace pattern
+    $filePath = __DIR__ . '/app/' . str_replace('\\', '/', $class) . '.php';
+    if(is_readable($filePath)) {
+        require_once $filePath;
     }
 }
 
+// register custom autoloader
 spl_autoload_register('friggAutoloader');

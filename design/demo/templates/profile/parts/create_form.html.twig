@@ -1,20 +1,28 @@
-<form method="post" action="/?profile&action=create">
-	<fieldset>
-		<legend>Create a profile with an account</legend>
-		<div>
-			Name<br />
-			<input type="text" name="name" class="required" />
-		</div>
-		<div>
-			Account number<br />
-			<input type="text" name="number" class="required" />
-		</div>
-		<div>
-			Amount<br />
-			<input type="text" name="amount" class="required" />
-		</div>
-		<div>
-			<button name="submit">Create</button>
-		</div>
-	</fieldset>
-</form>
+{% if form %}
+	<form method="post" action="/?profile&amp;action=create">
+		<fieldset>
+			<legend>Create a profile w/account</legend>
+			{% if errors %}
+				<ul>
+				{% for error in errors %}
+					<li class="text-error">{{ error }}</li>
+				{% endfor %}
+				</ul>
+			{% endif %}
+			{% for attribute, data in form.fields %}
+				{% if data.input == 'text' %}
+					<div>
+						{{ data.name }}<br />
+						<input type="{{ data.input }}" name="{{ attribute }}"{% if data.required %} class="required"{% endif %} />
+					</div>
+				{% elseif data.input == 'button' %}
+					<div>
+						<button name="{{ attribute }}">{{ data.name }}</button>
+					</div>
+				{% endif %}
+			{% endfor %}
+		</fieldset>
+	</form>
+{% else %}
+	<p><span class="text-error">Form is not available at the moment</a></p>
+{% endif %}
