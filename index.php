@@ -6,9 +6,7 @@ require_once __DIR__ . '/autoloader.php';
 
 try {
     // get registry instance
-    $registry = Registry::singleton()
-        ->loadSettings()
-        ->loadComponents();
+    $registry = Registry::singleton();
 
     // handle request
     $http = $registry->getComponent('frigg/http');

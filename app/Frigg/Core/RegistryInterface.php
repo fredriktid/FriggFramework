@@ -6,13 +6,13 @@ interface RegistryInterface
 {
     public static function singleton();
 
-    public function getComponent($identifier);
+    public static function getComponent($identifier);
 
-    public function setComponent($identifier);
+    public static function setComponent($identifier);
 
-    public function getHelper($identifier);
+    public static function getHelper($identifier);
 
-    public function setSetting($key, $value);
+    public static function setSetting($key, $value);
 
-    public function getSetting($key);
+    public static function getSetting($key);
 }

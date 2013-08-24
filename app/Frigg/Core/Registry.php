@@ -14,17 +14,18 @@ class Registry extends RegistrySingleton implements RegistryInterface
     private static $settings = array();
 
     // get component from registry
-    public function getComponent($identifier)
+    public static function getComponent($identifier)
     {
+        // try to load if it doest exist in registry
         if(!array_key_exists($identifier, static::$components)) {
-            static::$components[$identifier] = static::setComponent($identifier);
+            static::setComponent($identifier);
         }
 
         return static::$components[$identifier];
     }
 
     // set a component in registry
-    public function setComponent($identifier)
+    public static function setComponent($identifier)
     {
         list($appName, $className) = RegistryPattern::identifierToClass($identifier);
         $classPattern = sprintf('\%s\Core\Component\%sComponent', $appName, $className);
@@ -35,33 +36,33 @@ class Registry extends RegistrySingleton implements RegistryInterface
             throw $e;
         }
 
-        return $this;
+        return static::$instance;
     }
 
     // instantiate a helper class
     // returns a new object each time
-    public function getHelper($identifier)
+    public static function getHelper($identifier)
     {
         list($appName, $className) = RegistryPattern::identifierToClass($identifier);
         $helperPattern = sprintf('\%s\Helper\%sHelper', $appName, $className);
         return new $helperPattern(static::$instance);
     }
 
-    // stores setting in registry
-    public function setSetting($key, $value)
+    // set a setting key
+    public static function setSetting($key, $value)
     {
         static::$settings[$key] = $value;
-        return $this;
+        return static::$instance;
     }
 
-    // get setting from registry
-    public function getSetting($key)
+    // get a setting value
+    public static function getSetting($key)
     {
         return static::$settings[$key];
     }
 
     // default settings, mostly paths
-    public function loadSettings()
+    public static function loadSettings()
     {
         static::$instance
             ->setSetting('frigg/app', APP_NAME)
@@ -73,21 +74,5 @@ class Registry extends RegistrySingleton implements RegistryInterface
             ->setSetting('frigg/path/cache', APP_PATH . '/cache')
             ->setSetting('frigg/path/config', APP_PATH . '/config')
             ->setSetting('frigg/path/log', APP_PATH . '/log');
-
-        return $this;
-    }
-
-    public function loadComponents()
-    {
-        static::$instance
-            ->setComponent('frigg/config')
-            ->setComponent('frigg/http')
-            ->setComponent('frigg/logger')
-            ->setComponent('frigg/request')
-            ->setComponent('frigg/response')
-            ->setComponent('frigg/loader')
-            ->setComponent('frigg/form');
-
-        return $this;
     }
 }

@@ -12,14 +12,10 @@ use Symfony\Component\Console\Helper\HelperSet;
 require_once __DIR__ . '/autoloader.php';
 
 // get registry instance
-$registry = Registry::singleton()
-    ->loadSettings()
-    ->loadComponents();
+$registry = Registry::singleton();
 
 // get entity manager
-$em = $registry
-    ->getComponent('frigg/loader')
-    ->getInstance('frigg/doctrine');
+$em = $registry->getComponent('frigg/loader')->getInstance('frigg/doctrine');
 
 // doctrine helper
 $helperSet = new \Symfony\Component\Console\Helper\HelperSet(array(

@@ -2,56 +2,56 @@
 
 namespace Frigg\Core\Component;
 
-use Frigg\Core\Helper\StringHelper;
+use Frigg\Helper\StringHelper;
 
 class HttpComponent extends ComponentBase implements ComponentInterface, HttpComponentInterface
 {
-    public static function redirect($target)
+    public function redirect($target)
     {
         header(sprintf('Location: %s', $target));
     }
 
-    public static function serverData($key)
+    public function serverData($key)
     {
         return (isset($_SERVER[$key])) ? $_SERVER[$key] : false;
     }
 
-    public static function queryString()
+    public function queryString()
     {
         return static::serverData('QUERY_STRING');
     }
 
-    public static function httpHost()
+    public function httpHost()
     {
          return static::serverData('HTTP_HOST');
     }
 
-    public static function remoteAddr()
+    public function remoteAddr()
     {
         return static::serverData('REMOTE_ADDR');
     }
 
-    public static function sessionStart()
+    public function sessionStart()
     {
         session_start();
     }
 
-    public static function sessionId()
+    public function sessionId()
     {
         session_id();
     }
 
-    public static function sessionRegenerate()
+    public function sessionRegenerate()
     {
         session_regenerate_id();
     }
 
-    public static function sessionDestroy()
+    public function sessionDestroy()
     {
         session_destroy();
     }
 
-    public static function sessionVariables($key = false)
+    public function sessionVariables($key = false)
     {
         if(!$key) {
             return $_SESSION;
@@ -60,12 +60,12 @@ class HttpComponent extends ComponentBase implements ComponentInterface, HttpCom
         return (isset($_SESSION[$key])) ? $_SESSION[$key] : false;
     }
 
-    public static function setSessionVariable($key, $value)
+    public function setSessionVariable($key, $value)
     {
         $_SESSION[$key] = $value;
     }
 
-    public static function postVariables($key = false)
+    public function postVariables($key = false)
     {
         if(!$key) {
             return $_POST;
@@ -74,13 +74,13 @@ class HttpComponent extends ComponentBase implements ComponentInterface, HttpCom
         return (isset($_POST[$key])) ? $_POST[$key] : false;
     }
 
-    public static function setPostVariable($key, $value)
+    public function setPostVariable($key, $value)
     {
         $_POST[$key] = $value;
         return $this;
     }
 
-    public static function getVariables($key = false)
+    public function getVariables($key = false)
     {
         if(!$key) {
             return $_GET;
@@ -89,29 +89,27 @@ class HttpComponent extends ComponentBase implements ComponentInterface, HttpCom
         return (isset($_GET[$key])) ? $_GET[$key] : false;
     }
 
-    public static function setGetVariables($key, $value)
+    public function setGetVariables($key, $value)
     {
         $_GET[$key] = $value;
         return $this;
     }
 
-    public static function getCookie($key)
+    public function getCookie($key)
     {
         if(!isset($_COOKIE[$key])) {
             return false;
         }
 
         $value = $_COOKIE[$key];
-        $stringHelper = StringHelper::getHelper('frigg/string');
-
-        if($fileHelper->isSerialized($value)) {
+        if(StringHelper::isSerialized($value)) {
             $value = unserialize($value);
         }
 
         return $value;
     }
 
-    public static function setCookie($key, $value, $expire = false, $path = '/', $host = false)
+    public function setCookie($key, $value, $expire = false, $path = '/', $host = false)
     {
         if(is_array($value)) {
             $value = serialize($value);
@@ -129,7 +127,7 @@ class HttpComponent extends ComponentBase implements ComponentInterface, HttpCom
         return $this;
     }
 
-    public static function getCookieHost()
+    public function getCookieHost()
     {
         $host = static::httpHost();
 
