@@ -19,7 +19,7 @@ class RegistryPattern
     {
         preg_match_all('/((?:^|[A-Z])[a-z]+)/', $classString, $matches, PREG_PATTERN_ORDER);
         if(!is_array($matches[0]) || !count($matches[0])) {
-            throw new TypeException(sprintf('%s: Error converting %s to identifier', __METHOD__, $classString));
+            throw new TypeException(sprintf('Error converting %s to identifier in %s', $classString, __METHOD__));
         }
 
         return implode('/', array_map('strtolower', $matches[0]));
