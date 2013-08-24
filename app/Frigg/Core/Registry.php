@@ -27,7 +27,13 @@ class Registry extends RegistrySingleton implements RegistryInterface
     {
         list($appName, $className) = RegistryPattern::identifierToClass($identifier);
         $classPattern = sprintf('\%s\Core\Component\%sComponent', $appName, $className);
-        static::$components[$identifier] = new $classPattern(static::$instance);
+
+        try {
+            static::$components[$identifier] = new $classPattern(static::$instance);
+        } catch(\Exception $e) {
+            throw $e;
+        }
+
         return $this;
     }
 
