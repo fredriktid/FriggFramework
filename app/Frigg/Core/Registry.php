@@ -16,9 +16,8 @@ class Registry extends RegistrySingleton implements RegistryInterface
     // get component from registry
     public function getComponent($identifier)
     {
-        // find component and return it
         if(!array_key_exists($identifier, static::$components)) {
-            throw new CoreException(sprintf('Component key "%s" not found in registry. Try setting it first.', $identifier));
+            static::$components[$identifier] = static::setComponent($identifier);
         }
 
         return static::$components[$identifier];
@@ -65,15 +64,15 @@ class Registry extends RegistrySingleton implements RegistryInterface
     public function loadSettings()
     {
         static::$instance
-        ->setSetting('frigg/app', APP_NAME)
-        ->setSetting('frigg/dev', APP_DEV)
-        ->setSetting('frigg/skin', APP_SKIN)
-        ->setSetting('frigg/path', APP_PATH)
-        ->setSetting('frigg/path/app', APP_PATH . '/app')
-        ->setSetting('frigg/path/design', APP_PATH . '/design')
-        ->setSetting('frigg/path/cache', APP_PATH . '/cache')
-        ->setSetting('frigg/path/config', APP_PATH . '/config')
-        ->setSetting('frigg/path/log', APP_PATH . '/log');
+            ->setSetting('frigg/app', APP_NAME)
+            ->setSetting('frigg/dev', APP_DEV)
+            ->setSetting('frigg/skin', APP_SKIN)
+            ->setSetting('frigg/path', APP_PATH)
+            ->setSetting('frigg/path/app', APP_PATH . '/app')
+            ->setSetting('frigg/path/design', APP_PATH . '/design')
+            ->setSetting('frigg/path/cache', APP_PATH . '/cache')
+            ->setSetting('frigg/path/config', APP_PATH . '/config')
+            ->setSetting('frigg/path/log', APP_PATH . '/log');
 
         return $this;
     }
@@ -81,13 +80,13 @@ class Registry extends RegistrySingleton implements RegistryInterface
     public function loadComponents()
     {
         static::$instance
-        ->setComponent('frigg/config')
-        ->setComponent('frigg/http')
-        ->setComponent('frigg/logger')
-        ->setComponent('frigg/request')
-        ->setComponent('frigg/response')
-        ->setComponent('frigg/loader')
-        ->setComponent('frigg/form');
+            ->setComponent('frigg/config')
+            ->setComponent('frigg/http')
+            ->setComponent('frigg/logger')
+            ->setComponent('frigg/request')
+            ->setComponent('frigg/response')
+            ->setComponent('frigg/loader')
+            ->setComponent('frigg/form');
 
         return $this;
     }
