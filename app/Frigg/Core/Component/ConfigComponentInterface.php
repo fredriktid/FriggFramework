@@ -7,5 +7,4 @@ interface ConfigComponentInterface
     public function setSection($identifier, $filePath);
 
     public function getSection($identifier);
-
 }

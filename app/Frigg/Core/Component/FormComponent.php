@@ -1,5 +1,7 @@
 <?php
 
+// still a work in progress...
+
 namespace Frigg\Core\Component;
 
 class FormComponent extends ComponentBase implements ComponentInterface, FormComponentInterface

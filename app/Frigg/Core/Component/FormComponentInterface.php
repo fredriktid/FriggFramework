@@ -7,6 +7,4 @@ interface FormComponentInterface
     public function getSection($identifier);
 
     public function validateForm($formFields, $postData);
-
-    // work in progress...
 }

@@ -6,22 +6,28 @@ use Frigg\Core\Exception\CoreException;
 
 abstract class RegistrySingleton
 {
+    // a late static binding to allow static inheritance
     protected static $instance = null;
 
+    // not publically callable constructor
+    // prevents users from having more than one instance
     final private function __construct()
     {}
 
+    // prevent cloning
+    // prevents users from having more than one instance
     final public function __clone()
     {
         throw new CoreException('Cloning the registry is not permitted');
     }
 
+    // get singleton instance
     final public static function singleton()
     {
-        if(is_null(self::$instance)) {
-            self::$instance = new static;
+        if(is_null(static::$instance)) {
+            static::$instance = new static;
         }
 
-        return self::$instance;
+        return static::$instance;
     }
 }

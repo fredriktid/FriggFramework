@@ -25,5 +25,4 @@ interface HttpComponentInterface
     public function sessionDestroy();
 
     public function sessionVariables($key = false);
-
 }
