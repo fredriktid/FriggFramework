@@ -14,7 +14,7 @@ class ResponseComponent extends ComponentBase implements ComponentInterface, Res
         return (string) $this->response;
     }
 
-    public function executeRouter(ResponseComponentInterface $request)
+    public function executeRouter(RequestComponentInterface $request)
     {
         // default controller
         $controller = $request->getController();
