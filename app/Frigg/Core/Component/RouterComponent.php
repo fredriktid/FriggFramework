@@ -10,7 +10,7 @@ defined('APP_TOKEN') or die('This file can not be called directly');
 class RouterComponent extends BaseComponent
 {
     protected $controller = null;
-    protected $request = null;
+    protected $request = array();
 
     // parse request query
     public function parseRequest($queryString)
