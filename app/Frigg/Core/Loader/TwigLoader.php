@@ -3,6 +3,8 @@
 namespace Frigg\Core\Loader;
 
 use Frigg\Core\Registry;
+use Frigg\Helper\FileHelper;
+use Frigg\Helper\GlobalHelper;
 use Frigg\Core\Exception\ErrorException;
 
 class TwigLoader extends LoaderBase implements LoaderInterface
@@ -16,22 +18,20 @@ class TwigLoader extends LoaderBase implements LoaderInterface
     // set twig environment instance
     public function loadInstance()
     {
-        $skinPath = sprintf('%s/%s/%s', $this->registry->getSetting('frigg/path/design'), $this->registry->getSetting('frigg/skin'), 'templates');
+        $skinPath = sprintf('%s/%s/%s', $this->registry->getSetting('path/design'), APP_SKIN, 'templates');
         if(!is_readable($skinPath)) {
-            $fileHelper = $this->registry->getHelper('frigg/file');
-            if(!$fileHelper->createDir($skinPath)) {
+            if(!FileHelper::createDir($skinPath)) {
                 throw new ErrorException(sprintf('Template location not reachable: %s', $skinPath));
             }
         }
 
         // development mode
-        if($this->registry->getHelper('frigg/global')->isDevMode()) {
+        if(GlobalHelper::isDevMode()) {
             $cachePath = false;
         } else {
-            $fileHelper = $this->registry->getHelper('frigg/file');
-            $cachePath = $this->registry->getSetting('frigg/path/cache');
-            if(!$fileHelper->createDir($cachePath)) {
-                throw new ErrorException(sprintf('Twig cache directory not writable: %s', $cachePath));
+            $cachePath = $this->registry->getSetting('path/cache');
+            if(!FileHelper::createDir($cachePath)) {
+                throw new ErrorException(sprintf('Cache directory not writable: %s', $cachePath));
             }
         }
 

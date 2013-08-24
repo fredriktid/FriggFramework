@@ -23,7 +23,7 @@ class ConfigComponent extends ComponentBase implements ComponentInterface, Confi
         // first item is filename
         $parts = explode('/', $identifier);
         $fileName = trim(array_shift($parts));
-        $filePath = sprintf('%s/%s.php', $this->registry->getSetting('frigg/path/config'), $fileName);
+        $filePath = sprintf('%s/%s.php', $this->registry->getSetting('path/config'), $fileName);
 
         // read config
         $this->setSection($identifier, $filePath);

@@ -3,6 +3,7 @@
 namespace Frigg\Core\Loader;
 
 use Frigg\Core\Registry;
+use Frigg\Helper\GlobalHelper;
 use Frigg\Core\Exception\ErrorException;
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
@@ -18,11 +19,11 @@ class DoctrineLoader extends LoaderBase implements LoaderInterface
 
     public function loadInstance()
     {
-        $appPath = $this->registry->getSetting('frigg/path/app');
-        $appName = $this->registry->getSetting('frigg/app');
+        $appPath = $this->registry->getSetting('path/app');
+        $appName = APP_NAME;
 
         // development mode
-        $devMode = $this->registry->getHelper('frigg/global')->isDevMode();
+        $devMode = GlobalHelper::isDevMode();
 
         // entity autoload paths
         $entityPaths = array(sprintf('%s/%s/%s', $appPath, $appName, 'Entity'));

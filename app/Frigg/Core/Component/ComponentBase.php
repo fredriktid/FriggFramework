@@ -13,7 +13,7 @@ abstract class ComponentBase
         $this->registry = $registry;
     }
 
-    public function getName()
+    public function getClass()
     {
         return get_called_class();
     }

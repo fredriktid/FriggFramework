@@ -28,7 +28,7 @@ abstract class RegistrySingleton
             // another option would be to use get_called_class()
             static::$instance = new static;
             // set default settings in new registry instance
-            call_user_func(array(static::$instance, 'loadSettings'));
+            call_user_func(array(static::$instance, 'defaultSettings'));
         }
 
         return static::$instance;
@@ -36,5 +36,5 @@ abstract class RegistrySingleton
 
     // a must-implement method for loading default settings
     // into the new registry object
-    abstract public static function loadSettings();
+    abstract public static function defaultSettings();
 }

@@ -39,15 +39,6 @@ class Registry extends RegistrySingleton implements RegistryInterface
         return static::$instance;
     }
 
-    // instantiate a helper class
-    // returns a new object each time
-    public static function getHelper($identifier)
-    {
-        list($appName, $className) = RegistryPattern::identifierToClass($identifier);
-        $helperPattern = sprintf('\%s\Helper\%sHelper', $appName, $className);
-        return new $helperPattern(static::$instance);
-    }
-
     // set a setting key
     public static function setSetting($key, $value)
     {
@@ -62,17 +53,13 @@ class Registry extends RegistrySingleton implements RegistryInterface
     }
 
     // default settings, mostly paths
-    public static function loadSettings()
+    public static function defaultSettings()
     {
         static::$instance
-            ->setSetting('frigg/app', APP_NAME)
-            ->setSetting('frigg/dev', APP_DEV)
-            ->setSetting('frigg/skin', APP_SKIN)
-            ->setSetting('frigg/path', APP_PATH)
-            ->setSetting('frigg/path/app', APP_PATH . '/app')
-            ->setSetting('frigg/path/design', APP_PATH . '/design')
-            ->setSetting('frigg/path/cache', APP_PATH . '/cache')
-            ->setSetting('frigg/path/config', APP_PATH . '/config')
-            ->setSetting('frigg/path/log', APP_PATH . '/log');
+            ->setSetting('path/app', APP_PATH . '/app')
+            ->setSetting('path/design', APP_PATH . '/design')
+            ->setSetting('path/cache', APP_PATH . '/cache')
+            ->setSetting('path/config', APP_PATH . '/config')
+            ->setSetting('path/log', APP_PATH . '/log');
     }
 }

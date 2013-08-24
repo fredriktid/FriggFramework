@@ -23,7 +23,6 @@ class LoaderComponent extends ComponentBase implements ComponentInterface, Loade
             } catch(\Exception $e) {
                 throw $e;
             }
-
         }
 
         return $this->vendors[$identifier];

@@ -10,8 +10,6 @@ interface RegistryInterface
 
     public static function setComponent($identifier);
 
-    public static function getHelper($identifier);
-
     public static function setSetting($key, $value);
 
     public static function getSetting($key);

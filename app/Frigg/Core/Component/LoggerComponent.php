@@ -2,6 +2,7 @@
 
 namespace Frigg\Core\Component;
 
+use Frigg\Helper\FileHelper;
 use Frigg\Core\Exception\CoreException;
 
 class LoggerComponent extends ComponentBase implements ComponentInterface, LoggerComponentInterface
@@ -23,9 +24,8 @@ class LoggerComponent extends ComponentBase implements ComponentInterface, Logge
     public function write($message)
     {
         // check write access to log directory
-        $fileHelper = $this->registry->getHelper('frigg/file');
-        $logPath = $this->registry->getSetting('frigg/path/log');
-        if(!$fileHelper->createDir($logPath)) {
+        $logPath = $this->registry->getSetting('path/log');
+        if(!FileHelper::createDir($logPath)) {
             throw new CoreException(sprintf('Unable to create log directory: %s', $logPath));
         }
 

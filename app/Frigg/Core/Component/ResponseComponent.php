@@ -29,7 +29,7 @@ class ResponseComponent extends ComponentBase implements ComponentInterface, Res
         }
 
         // format namespace of controller
-        $classPattern = sprintf('\%s\Controller\%sController', $this->registry->getSetting('frigg/app'), $controller);
+        $classPattern = sprintf('\%s\Controller\%sController', APP_NAME, $controller);
         $functionPattern = sprintf('%sAction', strtolower($query['action']));
 
         // does the action exist?
