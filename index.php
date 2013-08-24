@@ -18,7 +18,7 @@ try {
     $response->executeRouter($request);
     echo $response;
 } catch(\Exception $e) {
-    printf('<p><strong>[%s] %s:</strong> %s</p><p><pre>%s</pre></p>',
+    echo $error = sprintf("[%s] %s: %s\n%s\n",
         strftime('%F %T'),
         get_class($e),
         $e->getMessage(),
