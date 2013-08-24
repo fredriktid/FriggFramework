@@ -2,65 +2,30 @@
 
 namespace Frigg\Core\Loader;
 
-use Frigg\Core\Exception\LoaderException;
+use Frigg\Core\Registry;
+use Frigg\Core\Exception\ErrorException;
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Common\ClassLoader;
 
-defined('APP_TOKEN') or die('This file can not be called directly');
-
-class DoctrineLoader extends BaseLoader
+class DoctrineLoader extends LoaderBase implements LoaderInterface
 {
-    protected $settings;
 
-    public function __construct($registry)
+    public function __construct(Registry $registry)
     {
         parent::__construct($registry);
-        $this->settings = $this->registry->getComponent('frigg/config')->getConfig('database/doctrine');
-
+        $this->instance = $this->loadInstance();
     }
 
-    // get current app name
-    public function getAppName()
-    {
-        return $this->registry->getSetting('frigg/app');
-    }
-
-    // override default app name
-    public function setAppName($appName)
-    {
-        $this->registry->setSetting('frigg/app', $appName);
-        return $this;
-    }
-
-    // get name of current skin
-    public function getSettings()
-    {
-        return $this->settings;
-    }
-
-    // set all settings
-    public function setSettings($settings)
-    {
-        $this->settings = $settings;
-        return $this;
-    }
-
-    // set value of a setting key
-    public function setSettingKey($key, $value)
-    {
-        $this->settings[$key] = $value;
-        return $this;
-    }
-
-    // init doctrine entity manager
-    protected function getEnvironment()
+    public function loadInstance()
     {
         $appPath = $this->registry->getSetting('frigg/path/app');
         $appName = $this->registry->getSetting('frigg/app');
+
+        // development mode
         $devMode = $this->registry->getHelper('frigg/global')->isDevMode();
 
-        // autoload paths
+        // entity autoload paths
         $entityPaths = array(sprintf('%s/%s/%s', $appPath, $appName, 'Entity'));
 
         // autoload entities and repositories
@@ -75,8 +40,9 @@ class DoctrineLoader extends BaseLoader
             }
         }
 
-        // create and return instance
+        // return new entity manger instance
+        $access = $this->registry->getComponent('frigg/config')->getSection('database/doctrine');
         $config = Setup::createAnnotationMetadataConfiguration($entityPaths, $devMode);
-        return EntityManager::create($this->settings, $config);
+        return EntityManager::create($access, $config);
     }
 }

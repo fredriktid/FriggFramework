@@ -2,11 +2,11 @@
 
 namespace Demo\Controller;
 
-use Frigg\Controller\BaseController;
+use Frigg\Controller\ControllerBase;
 use Demo\Entity as Entity;
 use Demo\Entity\Repository;
 
-class ProfileController extends BaseController
+class ProfileController extends ControllerBase
 {
     public function indexAction($request)
     {
@@ -15,8 +15,8 @@ class ProfileController extends BaseController
 
     public function listAction($request)
     {
-        $entityManager = $this->registry->getComponent('frigg/loader')->getLoader('frigg/doctrine')->getInstance();
-        $twigEngine = $this->registry->getComponent('frigg/loader')->getLoader('frigg/twig')->getInstance();
+        $template = $this->registry->getComponent('frigg/loader')->getInstance('frigg/twig');
+        $entityManager = $this->registry->getComponent('frigg/loader')->getInstance('frigg/doctrine');
 
         $collection = $entityManager
             ->getRepository('Demo\Entity\Profile')
@@ -26,7 +26,7 @@ class ProfileController extends BaseController
             );
 
         $collection = (!$collection) ? array() : $collection;
-        return $twigEngine->render('profile/list.html.twig', array(
+        return $template->render('profile/list.html.twig', array(
             'collection' => $collection,
             'request' => $request
         ));
@@ -35,7 +35,7 @@ class ProfileController extends BaseController
     public function viewAction($request)
     {
         // get doctrine manager
-        $entityManager = $this->registry->getComponent('frigg/loader')->getLoader('frigg/doctrine')->getInstance();
+        $entityManager = $this->registry->getComponent('frigg/loader')->getInstance('frigg/doctrine');
 
         // validate request data
         $errors = array();
@@ -51,8 +51,8 @@ class ProfileController extends BaseController
         }
 
         // if successful, render user profile template
-        $twigEngine = $this->registry->getComponent('frigg/loader')->getLoader('frigg/twig')->getInstance();
-        return $twigEngine->render('profile/view.html.twig', array(
+        $template = $this->registry->getComponent('frigg/loader')->getInstance('frigg/twig');
+        return $template->render('profile/view.html.twig', array(
             'errors' => $errors,
             'profile' => $profileObj,
             'request' => $request
@@ -62,15 +62,17 @@ class ProfileController extends BaseController
     public function createAction($request)
     {
         $form = $this->registry->getComponent('frigg/form');
-        $formData = $form->getConfig('forms/profile/create_profile');
+        $formData = $form->getSection('forms/profile/create_profile');
 
         $http = $this->registry->getComponent('frigg/http');
-        $twigEngine = $this->registry->getComponent('frigg/loader')->getLoader('frigg/twig')->getInstance();
+        $template = $this->registry->getComponent('frigg/loader')->getInstance('frigg/twig');
+        $entityManager = $this->registry->getComponent('frigg/loader')->getInstance('frigg/doctrine');
+
 
         // if no form has been submitted, just render the form template
         $postRequest = $http->postVariables();
         if(!isset($postRequest['submit'])) {
-            return $twigEngine->render('profile/create.html.twig', array(
+            return $template->render('profile/create.html.twig', array(
                 'form' => $formData,
                 'errors' => array()
             ));
@@ -79,7 +81,7 @@ class ProfileController extends BaseController
         // validate form data against config settings
         $errors = $form->validateForm($formData, $postRequest);
         if(0 !== count($errors)) {
-            return $twigEngine->render('profile/create.html.twig', array(
+            return $template->render('profile/create.html.twig', array(
                 'form' => $formData,
                 'errors' => $errors
             ));
@@ -103,13 +105,13 @@ class ProfileController extends BaseController
             $entityManager->persist($account);
             $entityManager->flush();
         } catch(\Exception $e) {
-            return $twigEngine->render('profile/create.html.twig', array(
+            return $template->render('profile/create.html.twig', array(
                 'form' => $formData,
                 'errors' => array(sprintf('Error saving profile w/account: %s', $e->getMessage()))
             ));
         }
 
-        return $twigEngine->render('profile/view.html.twig', array(
+        return $template->render('profile/view.html.twig', array(
             'profile' => $profile,
             'firsttime' => true
         ));

@@ -2,51 +2,48 @@
 
 namespace Frigg\Core\Loader;
 
-use Frigg\Core\Exception\LoaderException;
+use Frigg\Core\Registry;
+use Frigg\Core\Exception\ErrorException;
 
-defined('APP_TOKEN') or die('This file can not be called directly');
-
-class TwigLoader extends BaseLoader
+class TwigLoader extends LoaderBase implements LoaderInterface
 {
-    public function getSkin()
+    public function __construct(\Frigg\Core\Registry $registry)
     {
-        $this->registry->getSetting('frigg/skin');
+        parent::__construct($registry);
+        $this->instance = $this->loadInstance();
     }
 
-    // set another skin
-    public function setSkin($skinName)
+    // set twig environment instance
+    public function loadInstance()
     {
-        $this->registry->setSetting('frigg/skin', $skinName);
-        return $this;
-    }
-
-    // get twig instance
-    protected function getEnvironment()
-    {
-        // path to skin templates
-        $designPath = sprintf('%s/%s/%s', $this->registry->getSetting('frigg/path/design'), $this->registry->getSetting('frigg/skin'), 'templates');
-        if(!is_readable($designPath)) {
-            throw new LoaderException(sprintf('Template location not readable: %s', $designPath));
+        $skinPath = sprintf('%s/%s/%s', $this->registry->getSetting('frigg/path/design'), $this->registry->getSetting('frigg/skin'), 'templates');
+        if(!is_readable($skinPath)) {
+            $fileHelper = $this->registry->getHelper('frigg/file');
+            if(!$fileHelper->createDir($skinPath)) {
+                throw new ErrorException(sprintf('Template location not reachable: %s', $skinPath));
+            }
         }
 
-        // switch caching on/off in prod/dev environments
+        // development mode
         if($this->registry->getHelper('frigg/global')->isDevMode()) {
             $cachePath = false;
         } else {
             $fileHelper = $this->registry->getHelper('frigg/file');
             $cachePath = $this->registry->getSetting('frigg/path/cache');
             if(!$fileHelper->createDir($cachePath)) {
-                throw new LoaderException(sprintf('Twig cache directory not writable: %s', $cachePath));
+                throw new ErrorException(sprintf('Twig cache directory not writable: %s', $cachePath));
             }
         }
 
         // return environment instance
-        $twigEngineLoader = new \Twig_Loader_Filesystem($designPath);
-        $twigEngine = new \Twig_Environment($twigEngineLoader, array(
+        $twigLoader = new \Twig_Loader_Filesystem($skinPath);
+        $twigInstance = new \Twig_Environment($twigLoader, array(
             'cache' => $cachePath,
             'debug' => true, // provides "dump()" and also other useful functions
         ));
-        $twigEngine->addExtension(new \Twig_Extension_Debug());
-        return $twigEngine;
+        $twigInstance->addExtension(new \Twig_Extension_Debug());
+
+        // save and return new twig instance
+        return $twigInstance;
     }
 }

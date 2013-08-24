@@ -4,13 +4,11 @@ namespace Frigg\Core\Component;
 
 use Frigg\Core\Exception\CoreException;
 
-defined('APP_TOKEN') or die('This file can not be called directly');
-
-class ConfigComponent extends BaseComponent
+class ConfigComponent extends ComponentBase implements ComponentInterface, ConfigComponentInterface
 {
     protected $config = array();
 
-    public function setConfig($identifier, $filePath)
+    public function setSection($identifier, $filePath)
     {
         if(!array_key_exists($identifier, $this->config)) {
             if(is_readable($filePath)) {
@@ -20,7 +18,7 @@ class ConfigComponent extends BaseComponent
         return $this;
     }
 
-    public function getConfig($identifier)
+    public function getSection($identifier)
     {
         // first item is filename
         $parts = explode('/', $identifier);
@@ -28,7 +26,7 @@ class ConfigComponent extends BaseComponent
         $filePath = sprintf('%s/%s.php', $this->registry->getSetting('frigg/path/config'), $fileName);
 
         // read config
-        $this->setConfig($identifier, $filePath);
+        $this->setSection($identifier, $filePath);
 
         // check if config is available
         if(!array_key_exists($identifier, $this->config)) {

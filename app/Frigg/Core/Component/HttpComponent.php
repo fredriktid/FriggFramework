@@ -2,9 +2,7 @@
 
 namespace Frigg\Core\Component;
 
-defined('APP_TOKEN') or die('This file can not be called directly');
-
-class HttpComponent extends BaseComponent
+class HttpComponent extends ComponentBase implements ComponentInterface, HttpComponentInterface
 {
     public function redirect($target)
     {
@@ -21,7 +19,7 @@ class HttpComponent extends BaseComponent
         return $this->serverData('QUERY_STRING');
     }
 
-    public function HttpHost()
+    public function httpHost()
     {
          return $this->serverData('HTTP_HOST');
     }
@@ -36,11 +34,6 @@ class HttpComponent extends BaseComponent
         session_start();
     }
 
-    public function sessionDestroy()
-    {
-        session_destroy();
-    }
-
     public function sessionId()
     {
         session_id();
@@ -49,6 +42,11 @@ class HttpComponent extends BaseComponent
     public function sessionRegenerate()
     {
         session_regenerate_id();
+    }
+
+    public function sessionDestroy()
+    {
+        session_destroy();
     }
 
     public function sessionVariables($key = false)
@@ -130,7 +128,7 @@ class HttpComponent extends BaseComponent
 
     public function getCookieHost()
     {
-        $host = $this->HttpHost();
+        $host = $this->httpHost();
 
         // fix the host to accept hosts with and without 'www.'
         if(strtolower(substr($host, 0, 4)) == 'www.') {

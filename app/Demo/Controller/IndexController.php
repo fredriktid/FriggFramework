@@ -2,14 +2,15 @@
 
 namespace Demo\Controller;
 
-use Frigg\Controller\BaseController;
-use Frigg\Core\Exception\ControllerException;
+use Frigg\Controller\ControllerBase;
 
-class IndexController extends BaseController
+class IndexController extends ControllerBase
 {
     public function indexAction($request)
     {
-        $twigEngine = $this->registry->getComponent('frigg/loader')->getLoader('frigg/twig')->getInstance();
-        return $twigEngine->render('index.html.twig');
+        $template = $this->registry->getComponent('frigg/loader')->getInstance('frigg/twig');
+        return $template->render('index.html.twig', array(
+            'registry' => print_r($this->registry, true)
+        ));
     }
 }

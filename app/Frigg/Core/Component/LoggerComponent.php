@@ -4,9 +4,7 @@ namespace Frigg\Core\Component;
 
 use Frigg\Core\Exception\CoreException;
 
-defined('APP_TOKEN') or die('This file can not be called directly');
-
-class LoggerComponent extends BaseComponent
+class LoggerComponent extends ComponentBase implements ComponentInterface, LoggerComponentInterface
 {
     protected $file = 'default';
     protected $extension = 'log';

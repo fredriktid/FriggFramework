@@ -2,60 +2,30 @@
 
 namespace Frigg\Core;
 
-use Frigg\Core\ClassPattern;
+use Frigg\Core\RegistryPattern;
 use Frigg\Core\Component;
-use Frigg\Core\Exception\RegistryException;
+use Frigg\Core\Exception\CoreException;
 
-defined('APP_TOKEN') or die('This file can not be called directly');
-
-// core registry class
-// using the singleton design pattern
-class Registry
+class Registry extends RegistrySingleton implements RegistryInterface
 {
-    private static $instance = null;
     private static $components = array();
     private static $settings = array();
-
-    // private constructor to prevent user having more than once instance
-    // use singleton() instead
-    private function __construct() {}
-
-    // prevent cloning of this object to ensure correct data
-    public function __clone()
-    {
-        trigger_error('Cloning the registry is not permitted', E_USER_ERROR);
-    }
-
-    // public singleton used to access the unique instance of the registry
-    public static function singleton()
-    {
-        // virgin instantiation
-        if(is_null(static::$instance)) {
-            static::$instance = new static;
-        }
-
-        // set default settings in registry
-        static::setSettings();
-
-        // return unique instance
-        return static::$instance;
-    }
 
     // get component from registry
     public function getComponent($identifier)
     {
         // find component and return it
-        if(array_key_exists($identifier, static::$components)) {
-            return static::$components[$identifier];
+        if(!array_key_exists($identifier, static::$components)) {
+            throw new CoreException(sprintf('Component key "%s" not found in registry. Try setting it first.', $identifier));
         }
 
-        throw new RegistryException(sprintf('Component key "%s" not found in registry. Try setting it first.', $identifier));
+        return static::$components[$identifier];
     }
 
     // set a component in registry
     public function setComponent($identifier)
     {
-        list($appName, $className) = ClassPattern::identifierToClass($identifier);
+        list($appName, $className) = RegistryPattern::identifierToClass($identifier);
         $classPattern = sprintf('\%s\Core\Component\%sComponent', $appName, $className);
         static::$components[$identifier] = new $classPattern(static::$instance);
         return $this;
@@ -65,7 +35,7 @@ class Registry
     // returns a new object each time
     public function getHelper($identifier)
     {
-        list($appName, $className) = ClassPattern::identifierToClass($identifier);
+        list($appName, $className) = RegistryPattern::identifierToClass($identifier);
         $helperPattern = sprintf('\%s\Helper\%sHelper', $appName, $className);
         return new $helperPattern(static::$instance);
     }
@@ -84,17 +54,33 @@ class Registry
     }
 
     // default settings, mostly paths
-    private function setSettings()
+    public function loadSettings()
     {
         static::$instance
-            ->setSetting('frigg/app', APP_NAME)
-            ->setSetting('frigg/dev', APP_DEV)
-            ->setSetting('frigg/skin', APP_SKIN)
-            ->setSetting('frigg/path', APP_PATH)
-            ->setSetting('frigg/path/app', APP_PATH . '/app')
-            ->setSetting('frigg/path/design', APP_PATH . '/design')
-            ->setSetting('frigg/path/cache', APP_PATH . '/cache')
-            ->setSetting('frigg/path/config', APP_PATH . '/config')
-            ->setSetting('frigg/path/log', APP_PATH . '/log');
+        ->setSetting('frigg/app', APP_NAME)
+        ->setSetting('frigg/dev', APP_DEV)
+        ->setSetting('frigg/skin', APP_SKIN)
+        ->setSetting('frigg/path', APP_PATH)
+        ->setSetting('frigg/path/app', APP_PATH . '/app')
+        ->setSetting('frigg/path/design', APP_PATH . '/design')
+        ->setSetting('frigg/path/cache', APP_PATH . '/cache')
+        ->setSetting('frigg/path/config', APP_PATH . '/config')
+        ->setSetting('frigg/path/log', APP_PATH . '/log');
+
+        return $this;
+    }
+
+    public function loadComponents()
+    {
+        static::$instance
+        ->setComponent('frigg/config')
+        ->setComponent('frigg/http')
+        ->setComponent('frigg/logger')
+        ->setComponent('frigg/request')
+        ->setComponent('frigg/response')
+        ->setComponent('frigg/loader')
+        ->setComponent('frigg/form');
+
+        return $this;
     }
 }

@@ -3,13 +3,10 @@
 namespace Frigg\Core;
 
 use Frigg\Core\Exception\TypeException;
-use Frigg\Core\Exception\ErrorException;
-
-defined('APP_TOKEN') or die('This file can not be called directly');
 
 // class pattern functions
 // converts between identifiers and class names
-class ClassPattern
+class RegistryPattern
 {
     // convert snakecase to camelcase
     public static function snakeToCamel($identifier)

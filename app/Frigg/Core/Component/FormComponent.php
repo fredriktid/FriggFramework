@@ -2,21 +2,17 @@
 
 namespace Frigg\Core\Component;
 
-use Frigg\Core\Exception\CoreException;
-
-defined('APP_TOKEN') or die('This file can not be called directly');
-
-class FormComponent extends BaseComponent
+class FormComponent extends ComponentBase implements ComponentInterface, FormComponentInterface
 {
-    public function getConfig($identifier)
+    public function getSection($identifier)
     {
-        return $this->registry->getComponent('frigg/config')->getConfig($identifier);
+        return $this->registry->getComponent('frigg/config')->getSection($identifier);
     }
 
     public function validateForm($formFields, $postData)
     {
         // get doctrines entity manger
-        $entityManager = $this->registry->getComponent('frigg/loader')->getLoader('frigg/doctrine')->getInstance();
+        $entityManager = $this->registry->getComponent('frigg/loader')->getInstance('frigg/doctrine');
 
         // default values
         $errors = array();
