@@ -4,7 +4,7 @@ namespace Frigg\Helper;
 
 class ArrayHelper extends HelperBase
 {
-    public function searchRecusively($array, $value)
+    public static function searchRecusively($array, $value)
     {
         $found = array();
         array_walk_recursive($array, function($item, $key) use ($value, &$found) {

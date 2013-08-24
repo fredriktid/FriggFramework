@@ -4,25 +4,25 @@ namespace Frigg\Core\Component;
 
 interface HttpComponentInterface
 {
-    public function queryString();
+    public static function queryString();
 
-    public function getCookie($key);
+    public static function getCookie($key);
 
-    public function setCookie($key, $value, $expire = false, $path = '/', $host = false);
+    public static function setCookie($key, $value, $expire = false, $path = '/', $host = false);
 
-    public function getCookieHost();
+    public static function getCookieHost();
 
-    public function postVariables($key = false);
+    public static function postVariables($key = false);
 
-    public function getVariables($key = false);
+    public static function getVariables($key = false);
 
-    public function sessionStart();
+    public static function sessionStart();
 
-    public function sessionId();
+    public static function sessionId();
 
-    public function sessionRegenerate();
+    public static function sessionRegenerate();
 
-    public function sessionDestroy();
+    public static function sessionDestroy();
 
-    public function sessionVariables($key = false);
+    public static function sessionVariables($key = false);
 }

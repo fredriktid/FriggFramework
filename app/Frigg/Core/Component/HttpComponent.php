@@ -2,6 +2,8 @@
 
 namespace Frigg\Core\Component;
 
+use Frigg\Core\Helper\StringHelper;
+
 class HttpComponent extends ComponentBase implements ComponentInterface, HttpComponentInterface
 {
     public static function redirect($target)
@@ -100,7 +102,7 @@ class HttpComponent extends ComponentBase implements ComponentInterface, HttpCom
         }
 
         $value = $_COOKIE[$key];
-        $stringHelper = static::registry->getHelper('frigg/string');
+        $stringHelper = StringHelper::getHelper('frigg/string');
 
         if($fileHelper->isSerialized($value)) {
             $value = unserialize($value);

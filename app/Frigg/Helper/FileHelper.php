@@ -6,7 +6,7 @@ use Frigg\Core\Exception\ErrorException;
 
 class FileHelper extends HelperBase
 {
-    public function getFileName($file, $withExtension = false)
+    public static function getFileName($file, $withExtension = false)
     {
         if(!is_object($file)) {
             $file = new \SplFileObject($file);
@@ -15,7 +15,7 @@ class FileHelper extends HelperBase
         return ($withExtension) ? $file->getFilename() : substr($file->getFilename(), 0, -1 * (strlen($file->getExtension()) + 1));
     }
 
-    public function createDir($path)
+    public static function createDir($path)
     {
         if(is_dir($path)) {
             if(!is_writable($path)) {
@@ -27,7 +27,7 @@ class FileHelper extends HelperBase
         return mkdir($path, 0755);
     }
 
-    public function readCSVFile($file, $delimiter = ',')
+    public static function readCSVFile($file, $delimiter = ',')
     {
         try {
              $fileObject = new \SplFileObject($file);
@@ -46,7 +46,7 @@ class FileHelper extends HelperBase
         return $result;
     }
 
-    public function writeCSVFile($file, $data, $delimiter = ',', $enclosure = '"')
+    public static function writeCSVFile($file, $data, $delimiter = ',', $enclosure = '"')
     {
         try {
              $fileObject = new \SplFileObject($file, 'w');
@@ -54,23 +54,17 @@ class FileHelper extends HelperBase
             throw $e;
         }
 
-        $logger = $this->registry->getComponent('frigg/logger')->setFile('csv_write');
-        $logger->write(sprintf('--- Begin write to %s ---', $file));
-
         $count = 0;
         foreach($data as $fields) {
             if(!is_array($fields)) {
-                $logger->write(sprintf('Skipped row %d: Not an array', $i++));
                 continue;
             }
             if(!$fileObject->fputcsv($fields, $delimiter, $enclosure)) {
-                $logger->write(sprintf('Error writing row %d: %s', $i++, implode($delimiter, $fields)));
                 continue;
             }
             $count++;
         }
 
-        $logger->write(sprintf('Finished. Wrote %d of %d rows to file.', $count, count($data)));
         return $this;
     }
 }

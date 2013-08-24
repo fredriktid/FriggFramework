@@ -25,6 +25,7 @@ abstract class RegistrySingleton
     {
         if(is_null(static::$instance)) {
             // late static binding to allow static inheritance
+            // another option would be to use get_called_class()
             static::$instance = new static;
         }
 

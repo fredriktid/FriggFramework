@@ -7,13 +7,13 @@ use Frigg\Core\Exception\TypeException;
 class StringHelper extends HelperBase
 {
     // escape a string to used it as a regexp pattern
-    public function escapeGrepPattern($pattern)
+    public static function escapeGrepPattern($pattern)
     {
         return addcslashes($pattern, './+*?[^]($)');
     }
 
     // "get string [between] two characters"
-    public function getStringBetween($string, $start, $end)
+    public static function getStringBetween($string, $start, $end)
     {
         $string = ' ' . $string;
         $ini = strpos($string, $start);
@@ -27,13 +27,13 @@ class StringHelper extends HelperBase
     }
 
     // string starts with ...
-    public function startsWith($haystack, $needle)
+    public static function startsWith($haystack, $needle)
     {
         return !strncmp($haystack, $needle, strlen($needle));
     }
 
     // string ends with ...
-    public function endsWith($haystack, $needle)
+    public static function endsWith($haystack, $needle)
     {
         $length = strlen($needle);
         if($length == 0) {
@@ -44,7 +44,7 @@ class StringHelper extends HelperBase
     }
 
     // is string serialized?
-    public function isSerialized($string)
+    public static function isSerialized($string)
     {
         if(!is_string($string)) {
             return false;

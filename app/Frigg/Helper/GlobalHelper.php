@@ -6,8 +6,8 @@ use Frigg\Core\Exception\ErrorException;
 
 class GlobalHelper extends HelperBase
 {
-    public function isDevMode()
+    public static function isDevMode()
     {
-    	return ($this->registry->getSetting('frigg/dev') === true);
+    	return (defined('APP_DEV') && APP_DEV === true);
     }
 }
