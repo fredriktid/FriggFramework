@@ -32,7 +32,7 @@ class FileHelper extends HelperBase
         try {
              $fileObject = new \SplFileObject($file);
         } catch(\RuntimeException $e) {
-            throw new \RuntimeException(sprintf('CSV Read: Cannot open file %s', $file), 0, $e);
+            throw $e;
         }
 
         $fileObject->setFlags(\SplFileObject::READ_CSV);
@@ -51,7 +51,7 @@ class FileHelper extends HelperBase
         try {
              $fileObject = new \SplFileObject($file, 'w');
         } catch(\RuntimeException $e) {
-            throw new \RuntimeException(sprintf('CSV Write: Cannot write to file: %s', $file), 0, $e);
+            throw $e;
         }
 
         $logger = $this->registry->getComponent('frigg/logger')->setFile('csv_write');
@@ -71,7 +71,6 @@ class FileHelper extends HelperBase
         }
 
         $logger->write(sprintf('Finished. Wrote %d of %d rows to file.', $count, count($data)));
-        fclose($fileObject);
         return $this;
     }
 }

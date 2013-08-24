@@ -4,52 +4,52 @@ namespace Frigg\Core\Component;
 
 class HttpComponent extends ComponentBase implements ComponentInterface, HttpComponentInterface
 {
-    public function redirect($target)
+    public static function redirect($target)
     {
         header(sprintf('Location: %s', $target));
     }
 
-    public function serverData($key)
+    public static function serverData($key)
     {
         return (isset($_SERVER[$key])) ? $_SERVER[$key] : false;
     }
 
-    public function queryString()
+    public static function queryString()
     {
-        return $this->serverData('QUERY_STRING');
+        return static::serverData('QUERY_STRING');
     }
 
-    public function httpHost()
+    public static function httpHost()
     {
-         return $this->serverData('HTTP_HOST');
+         return static::serverData('HTTP_HOST');
     }
 
-    public function remoteAddr()
+    public static function remoteAddr()
     {
-        return $this->serverData('REMOTE_ADDR');
+        return static::serverData('REMOTE_ADDR');
     }
 
-    public function sessionStart()
+    public static function sessionStart()
     {
         session_start();
     }
 
-    public function sessionId()
+    public static function sessionId()
     {
         session_id();
     }
 
-    public function sessionRegenerate()
+    public static function sessionRegenerate()
     {
         session_regenerate_id();
     }
 
-    public function sessionDestroy()
+    public static function sessionDestroy()
     {
         session_destroy();
     }
 
-    public function sessionVariables($key = false)
+    public static function sessionVariables($key = false)
     {
         if(!$key) {
             return $_SESSION;
@@ -58,12 +58,12 @@ class HttpComponent extends ComponentBase implements ComponentInterface, HttpCom
         return (isset($_SESSION[$key])) ? $_SESSION[$key] : false;
     }
 
-    public function setSessionVariable($key, $value)
+    public static function setSessionVariable($key, $value)
     {
         $_SESSION[$key] = $value;
     }
 
-    public function postVariables($key = false)
+    public static function postVariables($key = false)
     {
         if(!$key) {
             return $_POST;
@@ -72,34 +72,35 @@ class HttpComponent extends ComponentBase implements ComponentInterface, HttpCom
         return (isset($_POST[$key])) ? $_POST[$key] : false;
     }
 
-    public function setPostVariable($key, $value)
+    public static function setPostVariable($key, $value)
     {
         $_POST[$key] = $value;
         return $this;
     }
 
-    public function getVariables($key = false)
+    public static function getVariables($key = false)
     {
         if(!$key) {
             return $_GET;
         }
+
         return (isset($_GET[$key])) ? $_GET[$key] : false;
     }
 
-    public function setGetVariables($key, $value)
+    public static function setGetVariables($key, $value)
     {
         $_GET[$key] = $value;
         return $this;
     }
 
-    public function getCookie($key)
+    public static function getCookie($key)
     {
         if(!isset($_COOKIE[$key])) {
             return false;
         }
 
         $value = $_COOKIE[$key];
-        $stringHelper = $this->registry->getHelper('frigg/string');
+        $stringHelper = static::registry->getHelper('frigg/string');
 
         if($fileHelper->isSerialized($value)) {
             $value = unserialize($value);
@@ -108,7 +109,7 @@ class HttpComponent extends ComponentBase implements ComponentInterface, HttpCom
         return $value;
     }
 
-    public function setCookie($key, $value, $expire = false, $path = '/', $host = false)
+    public static function setCookie($key, $value, $expire = false, $path = '/', $host = false)
     {
         if(is_array($value)) {
             $value = serialize($value);
@@ -119,16 +120,16 @@ class HttpComponent extends ComponentBase implements ComponentInterface, HttpCom
         }
 
         if(!$host) {
-            $host = $this->getCookieHost();
+            $host = static::getCookieHost();
         }
 
         setcookie($key, $value, $expire, $path, $host);
         return $this;
     }
 
-    public function getCookieHost()
+    public static function getCookieHost()
     {
-        $host = $this->httpHost();
+        $host = static::httpHost();
 
         // fix the host to accept hosts with and without 'www.'
         if(strtolower(substr($host, 0, 4)) == 'www.') {

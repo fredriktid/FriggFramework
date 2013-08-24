@@ -10,7 +10,6 @@ use Doctrine\Common\ClassLoader;
 
 class DoctrineLoader extends LoaderBase implements LoaderInterface
 {
-
     public function __construct(Registry $registry)
     {
         parent::__construct($registry);

@@ -28,7 +28,7 @@ class ResponseComponent extends ComponentBase implements ComponentInterface, Res
             $query['action'] = 'index';
         }
 
-        // namespace controller class and function
+        // format namespace of controller
         $classPattern = sprintf('\%s\Controller\%sController', $this->registry->getSetting('frigg/app'), $controller);
         $functionPattern = sprintf('%sAction', strtolower($query['action']));
 
@@ -38,10 +38,14 @@ class ResponseComponent extends ComponentBase implements ComponentInterface, Res
         }
 
         try {
+            // execute target controller
+            // save response in object
             $controller = new $classPattern($this->registry);
             $this->response = $controller->$functionPattern($query);
         } catch(\Exception $e) {
             throw $e;
         }
+
+        return $this;
     }
 }

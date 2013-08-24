@@ -6,10 +6,9 @@ use Frigg\Core\Exception\CoreException;
 
 abstract class RegistrySingleton
 {
-    // a late static binding to allow static inheritance
     protected static $instance = null;
 
-    // not publically callable constructor
+    // not callable!
     // prevents users from having more than one instance
     final private function __construct()
     {}
@@ -25,6 +24,7 @@ abstract class RegistrySingleton
     final public static function singleton()
     {
         if(is_null(static::$instance)) {
+            // late static binding to allow static inheritance
             static::$instance = new static;
         }
 

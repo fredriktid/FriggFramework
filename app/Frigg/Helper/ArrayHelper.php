@@ -2,8 +2,6 @@
 
 namespace Frigg\Helper;
 
-use Frigg\Core\Exception\ErrorException;
-
 class ArrayHelper extends HelperBase
 {
     public function searchRecusively($array, $value)

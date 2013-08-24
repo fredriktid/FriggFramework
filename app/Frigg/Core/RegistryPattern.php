@@ -4,7 +4,7 @@ namespace Frigg\Core;
 
 use Frigg\Core\Exception\TypeException;
 
-// class pattern functions
+// registry pattern handler
 // converts between identifiers and class names
 class RegistryPattern
 {
