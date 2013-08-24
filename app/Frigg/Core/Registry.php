@@ -2,7 +2,7 @@
 
 namespace Frigg\Core;
 
-use Frigg\Core\RegistryPattern;
+use Frigg\Helper\PatternHelper;
 use Frigg\Core\Component;
 use Frigg\Core\Exception\CoreException;
 
@@ -27,7 +27,7 @@ class Registry extends RegistrySingleton implements RegistryInterface
     // set a component in registry
     public static function setComponent($identifier)
     {
-        list($appName, $className) = RegistryPattern::identifierToClass($identifier);
+        list($appName, $className) = PatternHelper::identifierToClass($identifier);
         $classPattern = sprintf('\%s\Core\Component\%sComponent', $appName, $className);
 
         try {

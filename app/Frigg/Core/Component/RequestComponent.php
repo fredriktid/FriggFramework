@@ -2,32 +2,14 @@
 
 namespace Frigg\Core\Component;
 
-use Frigg\Core\RegistryPattern;
+use Frigg\Helper\PatternHelper;
 use Frigg\Core\RegistryInterface;
 use Frigg\Core\Component\HttpComponentInterface;
 
 class RequestComponent extends ComponentBase implements ComponentInterface, RequestComponentInterface
 {
-    protected $controller;
-    protected $query;
-
-    public function __construct(RegistryInterface $registry)
-    {
-        parent::__construct($registry);
-
-        $this->controller = null;
-        $this->query = array();
-    }
-
-    public function getController()
-    {
-        return $this->controller;
-    }
-
-    public function getQuery()
-    {
-        return $this->query;
-    }
+    protected $controller  = null;
+    protected $query = array();
 
     // parse request query
     public function parseRequest(HttpComponentInterface $http)
@@ -38,7 +20,7 @@ class RequestComponent extends ComponentBase implements ComponentInterface, Requ
         // first key is the controller
         $target = trim(array_shift($queryData));
         $target = (!$target) ? 'index' : $target;
-        $this->controller = RegistryPattern::snakeToCamel($target);
+        $this->controller = PatternHelper::snakeToCamel($target);
 
         // read request into registry
         $this->query = array();
@@ -48,5 +30,15 @@ class RequestComponent extends ComponentBase implements ComponentInterface, Requ
                 $this->query[$key] = $value;
             }
         }
+    }
+
+    public function getController()
+    {
+        return $this->controller;
+    }
+
+    public function getQuery()
+    {
+        return $this->query;
     }
 }

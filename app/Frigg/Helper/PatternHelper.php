@@ -1,12 +1,12 @@
 <?php
 
-namespace Frigg\Core;
+namespace Frigg\Helper;
 
 use Frigg\Core\Exception\TypeException;
 
-// registry pattern handler
+// class pattern helper
 // converts between identifiers and class names
-class RegistryPattern
+class PatternHelper
 {
     // convert snakecase to camelcase
     public static function snakeToCamel($identifier)
@@ -33,7 +33,7 @@ class RegistryPattern
             throw new TypeException(sprintf('A string is required as identifier in %s', __METHOD__));
         }
 
-        $parts = array_map(array(__CLASS__, 'snakeToCamel'), explode('/', $identifier));
+        $parts = array_map(array(get_called_class(), 'snakeToCamel'), explode('/', $identifier));
         return array(array_shift($parts), implode($parts));
     }
 }

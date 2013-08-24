@@ -2,7 +2,7 @@
 
 namespace Frigg\Core\Component;
 
-use Frigg\Core\RegistryPattern;
+use Frigg\Helper\PatternHelper;
 use Frigg\Core\Exception\RoutingException;
 
 class ResponseComponent extends ComponentBase implements ComponentInterface, ResponseComponentInterface
@@ -16,19 +16,16 @@ class ResponseComponent extends ComponentBase implements ComponentInterface, Res
 
     public function executeRouter(RequestComponentInterface $request)
     {
-        // default controller
+        // request data
         $controller = $request->getController();
-        if(!$controller) {
-            $controller = 'index';
-        }
-
-        // default action
         $query = $request->getQuery();
+
+        // default action to "index"
         if(!array_key_exists('action', $query)) {
             $query['action'] = 'index';
         }
 
-        // format namespace of controller
+        // namespace of controller
         $classPattern = sprintf('\%s\Controller\%sController', APP_NAME, $controller);
         $functionPattern = sprintf('%sAction', strtolower($query['action']));
 
