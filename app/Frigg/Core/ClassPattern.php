@@ -14,14 +14,14 @@ class ClassPattern
     // convert snakecase to camelcase
     public static function snakeToCamel($identifier)
     {
-        return trim(implode(array_map('ucfirst', explode('/', strtolower($identifier)))));
+        return trim(implode(array_map('ucfirst', explode('_', strtolower($identifier)))));
     }
 
     // convert camelcase to snakecase
     public static function classToIdentifier($classString)
     {
         preg_match_all('/((?:^|[A-Z])[a-z]+)/', $classString, $matches, PREG_PATTERN_ORDER);
-        if(is_array($matches[0]) || !count($matches[0])) {
+        if(!is_array($matches[0]) || !count($matches[0])) {
             throw new TypeException(sprintf('%s: Error converting %s to identifier', __METHOD__, $classString));
         }
 

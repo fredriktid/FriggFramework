@@ -45,7 +45,7 @@ class Registry
     public function getComponent($identifier)
     {
         // find component and return it
-        if(array_key_exists($identifier, static::$components) && is_object(static::$components[$identifier])) {
+        if(array_key_exists($identifier, static::$components)) {
             return static::$components[$identifier];
         }
 
