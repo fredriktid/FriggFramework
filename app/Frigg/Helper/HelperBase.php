@@ -3,14 +3,13 @@
 namespace Frigg\Helper;
 
 use Frigg\Core\Registry;
-use Frigg\Core\Exception\ErrorException;
 
-abstract class BaseHelper
+abstract class HelperBase
 {
 	protected $registry = null;
 	protected $data = array();
 
-	public function __construct(\Frigg\Core\Registry $registry)
+	public function __construct(Registry $registry)
 	{
 		$this->registry = $registry;
 	}

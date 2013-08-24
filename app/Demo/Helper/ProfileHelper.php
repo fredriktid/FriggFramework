@@ -2,9 +2,9 @@
 
 namespace Demo\Helper;
 
-use Frigg\Helper\BaseHelper;
+use Frigg\Helper\HelperBase;
 
-class ProfileHelper extends BaseHelper
+class ProfileHelper extends HelperBase
 {
 	// just an example
     public function rankProfilesSince($start = false)

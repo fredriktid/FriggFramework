@@ -4,7 +4,7 @@ namespace Frigg\Helper;
 
 use Frigg\Core\Exception\ErrorException;
 
-class FileHelper extends BaseHelper
+class FileHelper extends HelperBase
 {
     public function getFileName($file, $withExtension = false)
     {

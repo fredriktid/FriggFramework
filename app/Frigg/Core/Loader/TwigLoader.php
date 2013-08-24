@@ -7,7 +7,7 @@ use Frigg\Core\Exception\ErrorException;
 
 class TwigLoader extends LoaderBase implements LoaderInterface
 {
-    public function __construct(\Frigg\Core\Registry $registry)
+    public function __construct(Registry $registry)
     {
         parent::__construct($registry);
         $this->instance = $this->loadInstance();

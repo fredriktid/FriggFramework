@@ -4,7 +4,7 @@ namespace Frigg\Helper;
 
 use Frigg\Core\Exception\TypeException;
 
-class StringHelper extends BaseHelper
+class StringHelper extends HelperBase
 {
     // escape a string to used it as a regexp pattern
     public function escapeGrepPattern($pattern)

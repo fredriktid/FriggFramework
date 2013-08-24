@@ -2,9 +2,9 @@
 
 namespace Demo\Helper;
 
-use Frigg\Helper\BaseHelper;
+use Frigg\Helper\HelperBase;
 
-class AccountHelper extends BaseHelper
+class AccountHelper extends HelperBase
 {
 	// just an example
     public function generateGraphForAccountsCreatedBetween($start, $stop = false)

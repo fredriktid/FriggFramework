@@ -4,7 +4,7 @@ namespace Frigg\Helper;
 
 use Frigg\Core\Exception\ErrorException;
 
-class GlobalHelper extends BaseHelper
+class GlobalHelper extends HelperBase
 {
     public function isDevMode()
     {
