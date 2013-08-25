@@ -6,13 +6,13 @@ use Frigg\Core\Exception\ErrorException;
 
 class FileHelper extends HelperBase
 {
-    public static function getFileName($file, $withExtension = false)
+    public static function getFileName($file, $withExtension = true)
     {
         if(!is_object($file)) {
             $file = new \SplFileObject($file);
         }
 
-        return ($withExtension) ? $file->getFilename() : substr($file->getFilename(), 0, -1 * (strlen($file->getExtension()) + 1));
+        return ($withExtension) ? $file->getFilename() : $file->getBasename('.' . $file->getExtension());
     }
 
     public static function createDir($path)

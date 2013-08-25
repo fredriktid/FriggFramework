@@ -13,8 +13,7 @@ abstract class RegistrySingleton
     final private function __construct()
     {}
 
-    // prevent cloning
-    // prevents users from having more than one instance
+    // also prevent cloning of instance
     final public function __clone()
     {
         throw new CoreException('Cloning the registry is not permitted');

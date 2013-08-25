@@ -3,12 +3,13 @@
 namespace Frigg\Core\Component;
 
 use Frigg\Helper\PatternHelper;
-use Frigg\Core\Exception\RoutingException;
+use Frigg\Core\Exception\RouterException;
 
 class ResponseComponent extends ComponentBase implements ComponentInterface, ResponseComponentInterface
 {
     protected $response = null;
 
+    // print response
     public function __toString()
     {
         return (string) $this->response;
@@ -31,7 +32,7 @@ class ResponseComponent extends ComponentBase implements ComponentInterface, Res
 
         // does the action exist?
         if(!method_exists($classPattern, $functionPattern)) {
-            throw new RoutingException('Unknown action');
+            throw new RouterException('Unknown action');
         }
 
         try {

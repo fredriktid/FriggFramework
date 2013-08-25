@@ -18,10 +18,7 @@ try {
     $response->executeRouter($request);
     echo $response;
 } catch(\Exception $e) {
-    echo $error = sprintf("[%s] %s: %s\n%s\n",
-        strftime('%F %T'),
-        get_class($e),
-        $e->getMessage(),
-        $e->getTraceAsString()
-    );
+    $error = $registry->getComponent('frigg/error');
+    $error->exceptionHandler($e);
+    echo $error;
 }
