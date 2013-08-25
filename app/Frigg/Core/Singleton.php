@@ -4,7 +4,7 @@ namespace Frigg\Core;
 
 use Frigg\Core\Exception\CoreException;
 
-abstract class RegistrySingleton
+abstract class Singleton
 {
     protected static $instance = null;
 
@@ -16,7 +16,7 @@ abstract class RegistrySingleton
     // also prevent cloning of instance
     final public function __clone()
     {
-        throw new CoreException('Cloning the registry is not permitted');
+        throw new CoreException('Cloning a singleton instance is not permitted');
     }
 
     // get singleton instance

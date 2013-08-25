@@ -8,7 +8,7 @@ use Frigg\Core\Exception\CoreException;
 
 // core registry
 // inherits singleton design pattern
-class Registry extends RegistrySingleton implements RegistryInterface
+class Registry extends Singleton implements RegistryInterface
 {
     private static $components = array();
     private static $settings = array();
